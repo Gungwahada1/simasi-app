@@ -1,0 +1,69 @@
+version: "3"
+services:
+    # PHP Service
+    simasi-app:
+        build:
+            args:
+                user: simasi-app
+                uid: 1000
+            context: .
+            dockerfile: Dockerfile
+        image: simasi/app:simasi-php-1.0.0
+        container_name: simasi-app
+        restart: unless-stopped
+        tty: true
+        environment:
+            SERVICE_NAME: simasi-app
+            SERVICE_TAGS: dev
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www
+            - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+        networks:
+            - simasi-app-network
+
+    # Nginx Service
+    simasi-webserver:
+        image: nginx:alpine
+        container_name: simasi-webserver
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./:/var/www
+            - ./nginx/conf.d/:/etc/nginx/conf.d/
+            - ./nginx-logs:/var/log/nginx
+        networks:
+            - simasi-app-network
+
+    # MySQL Service
+    simasi-db:
+        image: mysql:8.1
+        container_name: simasi-db
+        restart: unless-stopped
+        tty: true
+#        command: --default-authentication-plugin=mysql_native_password
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+        volumes:
+            - simasi-dbdata:/var/lib/mysql/
+            - ./mysql/my.cnf:/etc/mysql/my.cnf
+        networks:
+            - simasi-app-network
+
+# Docker Networks
+networks:
+    simasi-app-network:
+        driver: bridge
+
+# Volumes
+volumes:
+    simasi-dbdata:
+        driver: local
