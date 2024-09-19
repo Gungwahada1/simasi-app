@@ -14,8 +14,13 @@ return new class extends Migration
         Schema::create('subjects', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('subject_name');
-            $table->text('description')->nullable();
-            $table->timestamps();
+            $table->text('subject-description')->nullable();
+            $table->timestamp('created_at');
+            $table->timestamp('created_by');
+            $table->timestamp('updated_at');
+            $table->timestamp('updated_by');
+            $table->timestamp('deleted_at');
+            $table->timestamp('deleted_by');
         });
     }
 

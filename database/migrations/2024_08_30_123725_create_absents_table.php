@@ -23,7 +23,12 @@ return new class extends Migration {
             $table->string('location_end')->nullable();
             $table->text('daily_report')->nullable();
             $table->text('daily_note')->nullable();
-            $table->timestamps();
+            $table->timestamp('created_at');
+            $table->timestamp('created_by');
+            $table->timestamp('updated_at');
+            $table->timestamp('updated_by');
+            $table->timestamp('deleted_at');
+            $table->timestamp('deleted_by');
         });
     }
 

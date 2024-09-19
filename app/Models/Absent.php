@@ -21,5 +21,11 @@ class Absent extends Model
         'location_end',
         'daily_report',
         'daily_note',
+        'created_at',
+        'created_by',
+        'updated_at',
+        'updated_by',
+        'deleted_at',
+        'deleted_by',
     ];
 }
