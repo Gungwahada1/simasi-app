@@ -15,6 +15,9 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link :href="url('teacher_absents')" :active="request()->is('teacher_absents*')">
+                        {{ __('Absent') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -38,6 +41,24 @@
                     </x-slot>
 
                     <x-slot name="content">
+                        <x-dropdown-link :href="url('students')">
+                            {{ __('Students') }}
+                        </x-dropdown-link>
+                        <x-dropdown-link :href="url('subjects')">
+                            {{ __('Subjects') }}
+                        </x-dropdown-link>
+                        <x-dropdown-link :href="url('absents')">
+                            {{ __('Absents') }}
+                        </x-dropdown-link>
+                        <x-dropdown-link :href="url('users')">
+                            {{ __('Users') }}
+                        </x-dropdown-link>
+                        <x-dropdown-link :href="url('roles')">
+                            {{ __('Roles') }}
+                        </x-dropdown-link>
+                        <x-dropdown-link :href="url('permissions')">
+                            {{ __('Permissions') }}
+                        </x-dropdown-link>
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
