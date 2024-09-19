@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Subject extends Model
 {
@@ -11,8 +12,17 @@ class Subject extends Model
 
     protected $fillable = [
         'subject_name',
-        'subject_code',
         'subject_description',
-        'subject_status',
+        'created_at',
+        'created_by',
+        'updated_at',
+        'updated_by',
+        'deleted_at',
+        'deleted_by',
     ];
+
+    public function students(): BelongsToMany
+    {
+        return $this->belongsToMany(Student::class, 'detail_subjects', 'subject_id', 'student_id');
+    }
 }

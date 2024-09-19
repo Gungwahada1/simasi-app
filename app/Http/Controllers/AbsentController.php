@@ -29,7 +29,7 @@ class AbsentController extends Controller
         //     ->with('i', (request()->input('page', 1) - 1) * 5);
         return view('dashboard');
     }
-    
+
     /**
      * Show the form for creating a new resource.
      *
@@ -40,7 +40,7 @@ class AbsentController extends Controller
         // return view('products.create');
         return view('dashboard');
     }
-    
+
     /**
      * Store a newly created resource in storage.
      *
@@ -53,15 +53,15 @@ class AbsentController extends Controller
         //     'name' => 'required',
         //     'detail' => 'required',
         // ]);
-    
+
         // Product::create($request->all());
-    
+
         // return redirect()->route('products.index')
         //                 ->with('success','Product created successfully.');
         //                 return view('dashboard');
                         return view('dashboard');
     }
-    
+
     /**
      * Display the specified resource.
      *
@@ -73,7 +73,7 @@ class AbsentController extends Controller
         // return view('products.show',compact('absent'));
         return view('dashboard');
     }
-    
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -85,7 +85,7 @@ class AbsentController extends Controller
         // return view('absents.edit',compact('absent'));
         return view('dashboard');
     }
-    
+
     /**
      * Update the specified resource in storage.
      *
@@ -99,15 +99,15 @@ class AbsentController extends Controller
         //     'name' => 'required',
         //     'detail' => 'required',
         // ]);
-    
+
         // $absent->update($request->all());
-    
+
         // return redirect()->route('absents.index')
         //                 ->with('success','Absent updated successfully');
-        
+
             return view('dashboard');
     }
-    
+
     /**
      * Remove the specified resource from storage.
      *
@@ -117,7 +117,7 @@ class AbsentController extends Controller
     public function destroy(Absent $absent)/*: RedirectResponse*/
     {
         // $absent->delete();
-    
+
         // return redirect()->route('products.index')
         //                 ->with('success','Product deleted successfully');
                         return view('dashboard');
