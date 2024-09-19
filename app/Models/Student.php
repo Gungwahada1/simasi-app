@@ -13,7 +13,13 @@ class Student extends Model
     protected $fillable = [
         'name',
         'grade',
-        'gender'
+        'gender',
+        'created_at',
+        'created_by',
+        'updated_at',
+        'updated_by',
+        'deleted_at',
+        'deleted_by',
     ];
 
     public function subjects(): BelongsToMany

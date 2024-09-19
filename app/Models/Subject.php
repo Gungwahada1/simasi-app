@@ -12,9 +12,13 @@ class Subject extends Model
 
     protected $fillable = [
         'subject_name',
-        'subject_code',
         'subject_description',
-        'subject_status',
+        'created_at',
+        'created_by',
+        'updated_at',
+        'updated_by',
+        'deleted_at',
+        'deleted_by',
     ];
 
     public function students(): BelongsToMany
