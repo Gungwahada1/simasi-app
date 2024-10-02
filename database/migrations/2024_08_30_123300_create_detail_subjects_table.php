@@ -15,12 +15,12 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('student_id')->constrained('students');
             $table->foreignUuid('subject_id')->constrained('subjects');
-            $table->timestamp('created_at');
-            $table->timestamp('created_by');
-            $table->timestamp('updated_at');
-            $table->timestamp('updated_by');
-            $table->timestamp('deleted_at');
-            $table->timestamp('deleted_by');
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('created_by')->nullable();
+            $table->timestamp('updated_at')->nullable();
+            $table->timestamp('updated_by')->nullable();
+            $table->timestamp('deleted_at')->nullable();
+            $table->timestamp('deleted_by')->nullable();
         });
     }
 

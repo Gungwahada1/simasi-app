@@ -16,12 +16,12 @@ return new class extends Migration
             $table->string('name');
             $table->string('grade');
             $table->enum('gender', ['M', 'F']);
-            $table->timestamp('created_at');
-            $table->timestamp('created_by');
-            $table->timestamp('updated_at');
-            $table->timestamp('updated_by');
-            $table->timestamp('deleted_at');
-            $table->timestamp('deleted_by');
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('created_by')->nullable();
+            $table->timestamp('updated_at')->nullable();
+            $table->timestamp('updated_by')->nullable();
+            $table->timestamp('deleted_at')->nullable();
+            $table->timestamp('deleted_by')->nullable();
         });
     }
 
