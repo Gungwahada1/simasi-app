@@ -1,8 +1,11 @@
 <?php
 
 use App\Http\Controllers\AbsentController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,5 +28,9 @@ Route::middleware('auth')->group(function () {
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
+    Route::resource('teacher_absents', TeacherAbsentController::class);
     Route::resource('absents', AbsentController::class);
+    Route::resource('permissions', PermissionController::class);
+    Route::resource('students', StudentController::class);
+    Route::resource('subjects', SubjectController::class);
 });
