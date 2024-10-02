@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
 
@@ -31,14 +33,30 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+//        dd(request()->all());
+
         $user = User::create([
+            'id' => Str::uuid()->toString(),
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'user_code' => strval('TCH' . rand(0, 999)),
+            'first_name' => $request->name,
+            'last_name' => $request->name,
+            'username' => $request->name,
+            'status_user' => $request->user_status,
+            'nip' => '',
+            'is_active' => 1,
+            'created_at' => Carbon::now(),
+            'created_by' => null,
+            'updated_at'  => Carbon::now(),
+            'updated_by' => null,
+            'deleted_at' => null,
+            'deleted_by' => null,
         ]);
 
         event(new Registered($user));
