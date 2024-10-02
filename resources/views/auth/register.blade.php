@@ -16,6 +16,23 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
+        <!-- User Status -->
+        <div class="mt-4">
+            <x-input-label for="user_status" :value="__('Your Status')" />
+            <select id="user_status" name="user_status" class="block mt-1 w-full" required>
+                <option value="Pegawai Tetap" {{ old('user_status') == 'Pegawai Tetap' ? 'selected' : '' }}>
+                    Pegawai Tetap
+                </option>
+                <option value="Paruh Waktu" {{ old('user_status') == 'Paruh Waktu' ? 'selected' : '' }}>
+                    Paruh Waktu
+                </option>
+                <option value="Magang" {{ old('user_status') == 'Magang' ? 'selected' : '' }}>
+                    Magang
+                </option>
+            </select>
+            <x-input-error :messages="$errors->get('user_status')" class="mt-2" />
+        </div>
+
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
