@@ -27,11 +27,11 @@ return new class extends Migration
             $table->string('nip')->nullable();
             $table->boolean('is_active');
             $table->timestamp('created_at')->nullable();
-            $table->timestamp('created_by')->nullable();
+            $table->string('created_by')->nullable();
             $table->timestamp('updated_at')->nullable();
-            $table->timestamp('updated_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamp('deleted_at')->nullable();
-            $table->timestamp('deleted_by')->nullable();
+            $table->string('deleted_by')->nullable();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

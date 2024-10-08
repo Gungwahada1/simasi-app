@@ -24,11 +24,11 @@ return new class extends Migration {
             $table->text('daily_report')->nullable();
             $table->text('daily_note')->nullable();
             $table->timestamp('created_at')->nullable();
-            $table->timestamp('created_by')->nullable();
+            $table->string('created_by')->nullable();
             $table->timestamp('updated_at')->nullable();
-            $table->timestamp('updated_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamp('deleted_at')->nullable();
-            $table->timestamp('deleted_by')->nullable();
+            $table->string('deleted_by')->nullable();
         });
     }
 

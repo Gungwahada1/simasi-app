@@ -11,6 +11,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
+    
     use HasFactory, Notifiable, HasRoles;
 
     /**
@@ -19,6 +20,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'id',
         'name',
         'email',
         'password',
@@ -36,7 +38,6 @@ class User extends Authenticatable
         'delated_at',
         'delated_by',
     ];
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -64,4 +65,6 @@ class User extends Authenticatable
     {
         return $this->hasMany(Absent::class, 'user_id');
     }
+
+
 }

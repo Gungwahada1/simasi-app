@@ -16,11 +16,11 @@ return new class extends Migration
             $table->foreignUuid('student_id')->constrained('students');
             $table->foreignUuid('subject_id')->constrained('subjects');
             $table->timestamp('created_at')->nullable();
-            $table->timestamp('created_by')->nullable();
+            $table->string('created_by')->nullable();
             $table->timestamp('updated_at')->nullable();
-            $table->timestamp('updated_by')->nullable();
+            $table->string('updated_by')->nullable();
             $table->timestamp('deleted_at')->nullable();
-            $table->timestamp('deleted_by')->nullable();
+            $table->string('deleted_by')->nullable();
         });
     }
 

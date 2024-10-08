@@ -9,8 +9,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Student extends Model
 {
     use HasFactory;
+    public $incrementing = false;
+    protected $keytype = 'string';
+
+    protected $primaryKey = 'id';
 
     protected $fillable = [
+        'id',
         'name',
         'grade',
         'gender',
@@ -21,6 +26,13 @@ class Student extends Model
         'deleted_at',
         'deleted_by',
     ];
+    
+
+    // Laravel will use this to bind models to routes
+    public function getRouteKeyName()
+    {
+        return 'id';
+    }
 
     public function subjects(): BelongsToMany
     {
