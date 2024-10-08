@@ -21,6 +21,15 @@ class Subject extends Model
         'deleted_by',
     ];
 
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+    protected $keyType = 'string';
+
+    public function getRouteKeyName()
+    {
+        return 'id';
+    }
+
     public function students(): BelongsToMany
     {
         return $this->belongsToMany(Student::class, 'detail_subjects', 'subject_id', 'student_id');
