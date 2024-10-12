@@ -14,7 +14,7 @@
                         href="{{ route('subjects.edit',$subject->id) }}">
                         <i class="fa-solid fa-pen-to-square"></i> Edit
                     </a>
-                    <form action="{{ route('subjects.destroy', $subject->id) }}" method="POST">
+                    <form action="{{ route('subjects.destroy', $subject->id) }}" method="POST" onsubmit="return confirmDelete()">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg shadow">Delete</button>
@@ -23,4 +23,9 @@
             </div>
         </div>
     </div>
+    <script>
+        function confirmDelete(){
+            return confirm("Are you sure you want to delete this subject?")
+        }
+    </script>
 </x-app-layout>

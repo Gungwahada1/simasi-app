@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Subjects') }}
+            {{ __('Role') }}
         </h2>
     </x-slot>
 
@@ -19,43 +19,63 @@
                         </div>
                     </div>                    
                     @endif
-                    <a href="{{ route('subjects.create') }}" class="inline-flex items-center px-4 py-2 m-3 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow">
-                        Add Subject
+                    {{--                    <div class="row">--}}
+                    {{--                        <div class="col-lg-12 margin-tb">--}}
+                    {{--                            <div class="pull-left">--}}
+                    {{--                                <h2>Users Management</h2>--}}
+                    {{--                            </div>--}}
+                    {{--                            <div class="pull-right">--}}
+                    {{--                                <a class="btn btn-success mb-2" href="{{ route('users.create') }}"><i--}}
+                    {{--                                        class="fa fa-plus"></i> Create New User</a>--}}
+                    {{--                            </div>--}}
+                    {{--                        </div>--}}
+                    {{--                    </div>--}}
+
+                    {{--                    @session('success')--}}
+                    {{--                    <div class="alert alert-success" role="alert">--}}
+                    {{--                        {{ $value }}--}}
+                    {{--                    </div>--}}
+                    {{--                    @endsession--}}
+
+                    <a href="{{ route('roles.create') }}" class="inline-flex items-center px-4 py-2 m-3 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow">
+                        Add Role
                     </a>
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" style="width: 100%;">
                         <tr class="bg-gray-100">
                             <th width="5%">No</th>
                             <th width="15%">Name</th>
-                            <th width="15%">Description</th>
+                            <th width="15%">Permisssions</th>
+                            <th width="15%">Created</th>
                             <th width="10%">Action</th>
                         </tr>
-                        @foreach ($data as $key => $subject)
+                        @foreach ($roles as $key => $role)
                             <tr>
                                 <td class="text-center">{{ ++$i }}</td>
-                                <td class="text-center">{{ $subject->subject_name }}</td>
-                                <td class="text-center">{{ $subject->subject_description }}</td>
+                                <td class="text-center">{{ $role->name }}</td>
+                                <td class="text-center">{{ $role->permissions->pluck('name')->implode(', ') }}</td>
+                                <td class="text-center">{{ \Carbon\Carbon::parse($role->created_at)->format('d M, Y') }}</td>
                                 {{--                                <td>--}}
-                                {{--                                    @if($subject->getRoleNames()->isNotEmpty())--}}
-                                {{--                                        @foreach($subject->getRoleNames() as $v)--}}
+                                {{--                                    @if($user->getRoleNames()->isNotEmpty())--}}
+                                {{--                                        @foreach($user->getRoleNames() as $v)--}}
                                 {{--                                            <label class="badge bg-success">{{ $v }}</label>--}}
                                 {{--                                        @endforeach--}}
                                 {{--                                    @endif--}}
                                 {{--                                </td>--}}
                                 <td class="text-center">
                                     <a class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow"
-                                       href="{{ route('subjects.show',$subject->id) }}">
+                                       href="{{ route('roles.show',$role->id) }}">
                                         <i class="fa-solid fa-list"></i> Show
                                     </a>
                                     <a class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg shadow"
-                                       href="{{ route('subjects.edit',$subject->id) }}">
+                                       href="{{ route('roles.edit',$role->id) }}">
                                         <i class="fa-solid fa-pen-to-square"></i> Edit
                                     </a>
-                                    <form method="POST" action="{{ route('subjects.destroy', $subject->id) }}"
+                                    <form method="POST" action="{{ route('roles.destroy', $role->id) }}"
                                           style="display:inline" onsubmit="return confirmDelete()">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                                class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg shadow">
+                                                class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg shadow" id="btnDelete">
                                             <i class="fa-solid fa-trash"></i> Delete
                                         </button>
                                     </form>
@@ -64,7 +84,7 @@
                         @endforeach
                     </table>
 
-                    {!! $data->links('pagination::bootstrap-5') !!}
+                    {!! $roles->links('pagination::bootstrap-5') !!}
 
                 </div>
             </div>
@@ -72,7 +92,7 @@
     </div>
     <script>
         function confirmDelete(){
-            return confirm("Are you sure you want to delete this subject?")
+            return confirm("Are you sure you want to delete this role?")
         }
     </script>
 </x-app-layout>
