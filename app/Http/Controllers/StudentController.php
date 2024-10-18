@@ -13,11 +13,22 @@ class StudentController extends Controller
 {
     public function index(Request $request): View
     {
-        $data = Student::paginate(5); // Menggunakan model Student langsung
+        $query = Student::query();
+
+        if ($request->filled('search')) {
+            $searchTerm = $request->search;
+    
+            $query->where('name', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('grade', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('gender', 'like', '%' . $searchTerm . '%');
+        }
+        
+        $data = $query->paginate(5);
 
         return view('students.index', ['data' => $data])
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
+    
 
     public function create(): View
     {
@@ -26,31 +37,31 @@ class StudentController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $id_user = Auth::user()->id;
-
+        // Fetch the authenticated user's UUID
+        $id_user = Auth::user()->id; // Ensure this returns the correct UUID
+    
+        // Validate the request
         $request->validate([
             'name' => 'required',
             'grade' => 'required',
             'gender' => 'required|in:M,F', // Validasi gender sesuai ENUM
         ]);
-
-        // Siapkan data untuk disimpan
+    
+        // Prepare data for saving
         $input = $request->all();
         
-
-        // Menghasilkan UUID
-        // Menetapkan ID UUID
+        // Generate UUID for the student
         $input['id'] = (string) Str::uuid();
-        $input['created_by'] = $id_user ; 
-        $input['updated_by'] = $id_user; 
-
-
-        // Menyimpan data ke dalam database
+        $input['created_by'] = $id_user; // Assign UUID to created_by
+        $input['updated_by'] = $id_user; // Assign UUID to updated_by
+    
+        // Save data to the database
         Student::create($input);
         
         return redirect()->route('students.index')
             ->with('success', 'Student created successfully');
     }
+    
 
     public function show($id): View
     {

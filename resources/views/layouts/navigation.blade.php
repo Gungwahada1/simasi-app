@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800"/>
+                        <img src="{{ asset('images/logo.jpg') }}" alt="Logo" class="h-12 w-12"/>
                     </a>
                 </div>
 
@@ -19,10 +19,10 @@
                         {{ __('Absents') }}
                     </x-nav-link>
                     <x-nav-link :href="url('students')" :active="request()->is('students*')">
-                        {{ __('students') }}
+                        {{ __('Students') }}
                     </x-nav-link>
                     <x-nav-link :href="url('subjects')" :active="request()->is('subjects*')">
-                        {{ __('subjects') }}
+                        {{ __('Subjects') }}
                     </x-nav-link>
                 </div>
             </div>

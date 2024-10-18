@@ -22,7 +22,7 @@
                     <a href="{{ route('subjects.create') }}" class="inline-flex items-center px-4 py-2 m-3 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow">
                         Add Subject
                     </a>
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" style="width: 100%;">
                         <tr class="bg-gray-100">
                             <th width="5%">No</th>
                             <th width="15%">Name</th>

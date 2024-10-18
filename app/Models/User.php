@@ -14,6 +14,8 @@ class User extends Authenticatable
     
     use HasFactory, Notifiable, HasRoles;
 
+    protected $keyType = 'string'; // Set key type to string for UUID
+    public $incrementing = false;
     /**
      * The attributes that are mass assignable.
      *
