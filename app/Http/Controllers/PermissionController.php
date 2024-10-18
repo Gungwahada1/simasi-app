@@ -72,7 +72,7 @@ class PermissionController extends Controller
         $permission->update([
             'name' => $request->name,
         ]);
-        return redirect()->route('permissions.index')->with('success', 'Permission updated successfully!');
+        return redirect()->route('permissions.index')->with('warning', 'Permission updated successfully!');
     }
 
     /**
@@ -82,6 +82,6 @@ class PermissionController extends Controller
     {
         Permission::find($id)->delete();
         return redirect()->route('permissions.index')
-            ->with('success', 'Permission deleted successfully');
+            ->with('danger', 'Permission deleted successfully');
     }
 }

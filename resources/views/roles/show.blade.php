@@ -7,10 +7,16 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white p-6 overflow-hidden shadow-sm sm:rounded-lg">
-                <h1 class="text-xl font-bold mb-4">{{ $role->name }}</h1>
+                <h1 class="text-xl font-bold mb-3">{{ $role->name }}</h1>
                 <strong>Permission:</strong><br/>
-                <p class="text-gray-700 mb-6">{{ $role->permissions->pluck('name')->implode(', ') }}</p>
-                <div class="flex space-x-4">
+                <p class="text-gray-700 mb-3">
+                    <ul class="list-none">
+                        @foreach ($role->permissions->pluck('name') as $permission)
+                            <li>{{ $permission }}</li>
+                        @endforeach
+                    </ul>
+                </p>
+                <div class="flex space-x-4 mt-3">
                     <a class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg shadow"
                         href="{{ route('roles.edit',$role->id) }}">
                         <i class="fa-solid fa-pen-to-square"></i> Edit

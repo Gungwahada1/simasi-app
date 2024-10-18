@@ -10,14 +10,36 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     @if ($message = Session::get('success'))
-                    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg shadow-lg mb-4 animate-bounce-in-down" role="alert">
+                    <div id="alert-success" class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg shadow-lg mb-4 animate-bounce-in-down" role="alert">
                         <div class="flex items-center">
                             <svg class="w-6 h-6 text-green-500 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7 12a5 5 0 1110 0 5 5 0 01-10 0z"></path>
                             </svg>
                             <span class="font-medium">{{ $message }}</span>
                         </div>
-                    </div>                    
+                    </div>
+                    @endif
+
+                    @if ($message = Session::get('warning'))
+                        <div id="alert-warning" class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-lg shadow-lg mb-4 animate-bounce-in-down" role="alert">
+                            <div class="flex items-center">
+                                <svg class="w-6 h-6 text-yellow-500 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7 12a5 5 0 1110 0 5 5 0 01-10 0z"></path>
+                                </svg>
+                                <span class="font-medium">{{ $message }}</span>
+                            </div>
+                        </div>
+                    @endif
+
+                    @if ($message = Session::get('danger'))
+                        <div id="alert-danger" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg shadow-lg mb-4 animate-bounce-in-down" role="alert">
+                            <div class="flex items-center">
+                                <svg class="w-6 h-6 text-red-500 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7 12a5 5 0 1110 0 5 5 0 01-10 0z"></path>
+                                </svg>
+                                <span class="font-medium">{{ $message }}</span>
+                            </div>
+                        </div>
                     @endif
                     <a href="{{ route('subjects.create') }}" class="inline-flex items-center px-4 py-2 m-3 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow">
                         Add Subject
@@ -34,13 +56,6 @@
                                 <td class="text-center">{{ ++$i }}</td>
                                 <td class="text-center">{{ $subject->subject_name }}</td>
                                 <td class="text-center">{{ $subject->subject_description }}</td>
-                                {{--                                <td>--}}
-                                {{--                                    @if($subject->getRoleNames()->isNotEmpty())--}}
-                                {{--                                        @foreach($subject->getRoleNames() as $v)--}}
-                                {{--                                            <label class="badge bg-success">{{ $v }}</label>--}}
-                                {{--                                        @endforeach--}}
-                                {{--                                    @endif--}}
-                                {{--                                </td>--}}
                                 <td class="text-center">
                                     <a class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow"
                                        href="{{ route('subjects.show',$subject->id) }}">
@@ -74,5 +89,18 @@
         function confirmDelete(){
             return confirm("Are you sure you want to delete this subject?")
         }
+
+        setTimeout(function() {
+        let alertTypes = ['alert-success', 'alert-warning', 'alert-danger'];
+
+        alertTypes.forEach(function(id) {
+            let alertElement = document.getElementById(id);
+            if (alertElement) {
+                alertElement.style.transition = 'opacity 0.5s ease';
+                alertElement.style.opacity = '0';
+                setTimeout(function() { alertElement.remove(); }, 500);
+            }
+        });
+        }, 5000);
     </script>
 </x-app-layout>

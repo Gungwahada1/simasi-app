@@ -68,13 +68,13 @@ class SubjectController extends Controller
             'subject_description' => $request->subject_description,
             'updated_at' => Carbon::now(),
         ]);
-        return redirect()->route('subjects.index')->with('success', 'Subject updated successfully!');
+        return redirect()->route('subjects.index')->with('warning', 'Subject updated successfully!');
     }
 
     public function destroy($id): RedirectResponse
     {
         Subject::find($id)->delete();
         return redirect()->route('subjects.index')
-            ->with('success', 'Subject deleted successfully');
+            ->with('danger', 'Subject deleted successfully');
     }
 }
