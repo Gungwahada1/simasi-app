@@ -13,7 +13,17 @@ class StudentController extends Controller
 {
     public function index(Request $request): View
     {
-        $data = Student::paginate(5); // Menggunakan model Student langsung
+        $query = Student::query();
+
+        if ($request->filled('search')) {
+            $searchTerm = $request->search;
+    
+            $query->where('name', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('grade', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('gender', 'like', '%' . $searchTerm . '%');
+        }
+
+        $data = $query->paginate(5); // Menggunakan model Student langsung
 
         return view('students.index', ['data' => $data])
             ->with('i', ($request->input('page', 1) - 1) * 5);

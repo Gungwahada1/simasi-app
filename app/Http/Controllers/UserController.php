@@ -15,7 +15,16 @@ class UserController extends Controller
 {
     public function index(Request $request): View
     {
-        $data = DB::table('users')->paginate(5);
+        $query = DB::table('users');
+
+        if ($request->filled('search')) {
+            $searchTerm = $request->search;
+    
+            $query->where('name', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('email', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('status_user', 'like', '%' . $searchTerm . '%');
+        }
+        $data = $query->paginate(5);
 
         return view('users.index', ['data' => $data])
             ->with('i', ($request->input('page', 1) - 1) * 5);
@@ -56,7 +65,7 @@ class UserController extends Controller
 
     public function edit($id): View
     {
-        $user = User::find($id);
+        $user = User::findOrFail($id);
         $roles = Role::pluck('name', 'name')->all();
         $userRole = $user->roles->pluck('name', 'name')->all();
 

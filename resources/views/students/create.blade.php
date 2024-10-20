@@ -45,9 +45,14 @@
                             </div>
 
                             <!-- Submit Button -->
-                            <div class="flex justify-end">
-                                <button type="submit" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow">
-                                    Create Student
+                            <div class="flex items-center justify-end mt-4">
+                                <a href="{{ route('students.index') }}" 
+                                   class="mr-4 inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-300 hover:bg-gray-400 rounded-md shadow">
+                                    Cancel
+                                </a>
+                                <button type="submit" 
+                                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md shadow">
+                                    Create
                                 </button>
                             </div>
                         </div>

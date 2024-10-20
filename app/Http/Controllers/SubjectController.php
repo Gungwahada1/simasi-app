@@ -14,7 +14,15 @@ class SubjectController extends Controller
 {
     public function index(Request $request): View
     {
-        $data = DB::table('subjects')->paginate(5);
+        $query = Subject::query();
+
+        if ($request->filled('search')) {
+            $searchTerm = $request->search;
+    
+            $query->where('subject_name', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('subject_description', 'like', '%' . $searchTerm . '%');
+        }
+        $data = $query->paginate(5);
 
         return view('subjects.index', ['data' => $data])
             ->with('i', ($request->input('page', 1) - 1) * 5);

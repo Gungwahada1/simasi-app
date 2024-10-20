@@ -41,9 +41,17 @@
                             </div>
                         </div>
                     @endif
-                    <a href="{{ route('roles.create') }}" class="inline-flex items-center px-4 py-2 m-3 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow">
-                        Add Role
-                    </a>
+                    <div class="flex justify-between items-center mb-4">
+                        <form action="{{ route('roles.index') }}" method="GET" class="flex-grow mr-2 flex">
+                            <input type="text" name="search" placeholder="Cari Role" class="border border-gray-300 rounded-lg p-2 w-full " value="{{ request('search') }}">
+                            <button type="submit" class="ml-3 inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg shadow">
+                                Search
+                            </button>
+                        </form>
+                        <a href="{{ route('roles.create') }}" class="inline-flex items-center px-4 py-2 m-3 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow">
+                            Add Role
+                        </a>
+                    </div>
                     <table class="table table-bordered" style="width: 100%;">
                         <tr class="bg-gray-100">
                             <th width="5%">No</th>
@@ -87,7 +95,9 @@
                         @endforeach
                     </table>
 
-                    {!! $roles->links('pagination::bootstrap-5') !!}
+                    <div class="flex justify-center mt-4">
+                        {!! $roles->links('layouts.pagination') !!}
+                    </div>
 
                 </div>
             </div>
