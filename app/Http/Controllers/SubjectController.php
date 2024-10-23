@@ -14,7 +14,15 @@ class SubjectController extends Controller
 {
     public function index(Request $request): View
     {
-        $data = DB::table('subjects')->paginate(5);
+        $query = Subject::query();
+
+        if ($request->filled('search')) {
+            $searchTerm = $request->search;
+    
+            $query->where('subject_name', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('subject_description', 'like', '%' . $searchTerm . '%');
+        }
+        $data = $query->paginate(5);
 
         return view('subjects.index', ['data' => $data])
             ->with('i', ($request->input('page', 1) - 1) * 5);
@@ -68,13 +76,13 @@ class SubjectController extends Controller
             'subject_description' => $request->subject_description,
             'updated_at' => Carbon::now(),
         ]);
-        return redirect()->route('subjects.index')->with('success', 'Subject updated successfully!');
+        return redirect()->route('subjects.index')->with('warning', 'Subject updated successfully!');
     }
 
     public function destroy($id): RedirectResponse
     {
         Subject::find($id)->delete();
         return redirect()->route('subjects.index')
-            ->with('success', 'Subject deleted successfully');
+            ->with('danger', 'Subject deleted successfully');
     }
 }

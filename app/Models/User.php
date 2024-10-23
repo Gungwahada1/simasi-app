@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
@@ -12,7 +13,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, Notifiable, HasRoles, SoftDeletes;
 
     protected $keyType = 'string'; // Set key type to string for UUID
     public $incrementing = false;
@@ -37,8 +38,8 @@ class User extends Authenticatable
         'created_by',
         'updated_at',
         'updated_by',
-        'delated_at',
-        'delated_by',
+        'deleted_at',
+        'deleted_by',
     ];
     /**
      * The attributes that should be hidden for serialization.
@@ -62,6 +63,8 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    protected $dates = ['deleted_at'];
 
     public function absents(): HasMany
     {

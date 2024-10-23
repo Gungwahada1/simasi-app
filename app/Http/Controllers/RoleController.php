@@ -23,7 +23,14 @@ class RoleController extends Controller
 
     public function index(Request $request): View
     {
-        $roles = Role::orderBy('id','DESC')->paginate(5);
+        $query = Role::query();
+
+        if ($request->filled('search')) {
+            $searchTerm = $request->search;
+    
+            $query->where('name', 'like', '%' . $searchTerm . '%');
+        }
+        $roles = $query->orderBy('id','DESC')->paginate(5);
         return view('roles.index',compact('roles'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
@@ -39,6 +46,10 @@ class RoleController extends Controller
         $request->validate([
             'name' => 'required|unique:roles',
         ]);
+
+        // if (empty($request->permission)) {
+        //     return redirect()->back()->withErrors(['permission' => 'At least one permission is required.'])->withInput();
+        // }
 
         $role = Role::create([
             'name' => $request->name,
@@ -85,13 +96,13 @@ class RoleController extends Controller
         } else {
             $role->syncPermissions([]);
         }
-        return redirect()->route('roles.index')->with('success', 'Role updated successfully!');
+        return redirect()->route('roles.index')->with('warning', 'Role updated successfully!');
     }
 
     public function destroy($id)
     {
         Role::find($id)->delete();
         return redirect()->route('roles.index')
-            ->with('success', 'Role deleted successfully');
+            ->with('danger', 'Role deleted successfully');
     }
 }

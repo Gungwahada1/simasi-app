@@ -13,7 +13,14 @@ class PermissionController extends Controller
      */
     public function index(Request $request): View
     {
-        $permissions = Permission::orderBy('id','DESC')->paginate(5);
+        $query = Permission::query();
+
+        if ($request->filled('search')) {
+            $searchTerm = $request->search;
+    
+            $query->where('name', 'like', '%' . $searchTerm . '%');
+        }
+        $permissions = $query->orderBy('id','DESC')->paginate(5);
         return view('permissions.index',compact('permissions'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
@@ -32,12 +39,13 @@ class PermissionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:permissions',
+            'name' => 'required|array',
+            'name.*' => 'required|string|unique:permissions,name',
         ]);
-
-        Permission::create([
-            'name' => $request->name,
-        ]);
+    
+        foreach ($request->name as $permissionName) {
+            Permission::create(['name' => $permissionName]);
+        }
         return redirect()->route('permissions.index')->with('success', 'Permission created successfully!');
     }
 
@@ -72,7 +80,7 @@ class PermissionController extends Controller
         $permission->update([
             'name' => $request->name,
         ]);
-        return redirect()->route('permissions.index')->with('success', 'Permission updated successfully!');
+        return redirect()->route('permissions.index')->with('warning', 'Permission updated successfully!');
     }
 
     /**
@@ -82,6 +90,6 @@ class PermissionController extends Controller
     {
         Permission::find($id)->delete();
         return redirect()->route('permissions.index')
-            ->with('success', 'Permission deleted successfully');
+            ->with('danger', 'Permission deleted successfully');
     }
 }

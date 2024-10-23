@@ -18,8 +18,16 @@ class UserController extends Controller
      */
     public function index(Request $request): View
     {
+        $query = DB::table('users');
 
-        $data = User::paginate(5);
+        if ($request->filled('search')) {
+            $searchTerm = $request->search;
+    
+            $query->where('name', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('email', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('status_user', 'like', '%' . $searchTerm . '%');
+        }
+        $data = $query->paginate(5);
 
         return view('users.index', ['data' => $data])
             ->with('i', ($request->input('page', 1) - 1) * 5);
@@ -81,10 +89,7 @@ class UserController extends Controller
      */
     public function edit($id): View
     {
-        // Menemukan user berdasarkan ID atau gagal dengan 404
         $user = User::findOrFail($id);
-
-        // Mengambil daftar roles
         $roles = Role::pluck('name', 'name')->all();
         // Mengambil roles yang dimiliki user
         $userRole = $user->roles->pluck('name', 'name')->all();

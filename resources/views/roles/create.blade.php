@@ -10,8 +10,11 @@
                 <form action="{{ route('roles.store') }}" method="POST" class="space-y-5 p-5">
                     @csrf
                     <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
-                    <input type="text" name="name" id="name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm 
-                    focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    <input type="text" name="name" id="name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm 
+                    focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" value="{{ old('name') }}">
+                    @error('name')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
             
                     <div class="col-xs-12 col-sm-12 col-md-12">
                         <div class="form-group">
@@ -25,12 +28,22 @@
                                     </label>
                                 @endforeach
                             </div>
+                            {{-- @error('permission')
+                                <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror --}}
                         </div>
                     </div>
             
-                    <button type="submit" class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm 
-                    text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 
-                    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Create</button>
+                    <div class="flex items-center justify-end mt-4">
+                        <a href="{{ route('roles.index') }}" 
+                           class="mr-4 inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-300 hover:bg-gray-400 rounded-md shadow">
+                            Cancel
+                        </a>
+                        <button type="submit" 
+                                class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md shadow">
+                            Create
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>

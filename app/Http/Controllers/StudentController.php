@@ -91,13 +91,13 @@ class StudentController extends Controller
         $student->update($input);
 
         return redirect()->route('students.index')
-            ->with('success', 'Student updated successfully');
+            ->with('warning', 'Student updated successfully');
     }
 
     public function destroy($id): RedirectResponse
     {
         Student::findOrFail($id)->delete(); 
         return redirect()->route('students.index')
-            ->with('success', 'Student deleted successfully');
+            ->with('danger', 'Student deleted successfully');
     }
 }
