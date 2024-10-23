@@ -28,9 +28,14 @@
             @endisset
 
             <!-- Page Content -->
-            <main>
+            <main >
                 {{ $slot }}
             </main>
+            <footer class="bg-gray-800 text-white p-4 mt-10">
+                <div class="max-w-7xl mx-auto text-center">
+                    <p>&copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.</p>
+                </div>
+            </footer>
         </div>
     </body>
 </html>
