@@ -7,6 +7,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\StoreUserController;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/auth.php';

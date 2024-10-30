@@ -19,10 +19,10 @@
 
                     <label for="status_user" class="block text-sm font-medium text-gray-700">Status User</label>
                     <select name="status_user" id="status_user" class="form-select rounded-md shadow-sm mt-1 block w-full" required>
-                        <option value="" disabled selected>Select Status</option>
-                        <option value="Magang">Magang</option>
-                        <option value="Paruh Waktu">Paruh Waktu</option>
-                        <option value="Pegawai Tetap">Pegawai Tetap</option>
+                    <option value="" disabled selected>Select Status</option>
+                    @foreach($roles as $role)
+                    <option value="{{ $role->name }}">{{ $role->name }}</option>
+                    @endforeach
                     </select>
 
                     <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
