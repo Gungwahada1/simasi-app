@@ -23,10 +23,10 @@ class StudentController extends Controller
                   ->orWhere('gender', 'like', '%' . $searchTerm . '%');
         }
 
-        $data = $query->paginate(5); // Menggunakan model Student langsung
+        $data = $query->paginate(10);
 
         return view('students.index', ['data' => $data])
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+            ->with('i', ($request->input('page', 1) - 1) * 10);
     }
 
     public function create(): View

@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class="bg-white border-b border-gray-100 shadow">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -15,7 +15,7 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="url('absents')" :active="request()->is('absents*')">
+                    <x-nav-link :href="url('absents/create')" :active="request()->is('absents/create')">
                         {{ __('Absents') }}
                     </x-nav-link>
                     <x-nav-link :href="url('students')" :active="request()->is('students*')">

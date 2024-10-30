@@ -20,7 +20,7 @@ class PermissionController extends Controller
     
             $query->where('name', 'like', '%' . $searchTerm . '%');
         }
-        $permissions = $query->orderBy('id','DESC')->paginate(5);
+        $permissions = $query->orderBy('id','DESC')->paginate(10);
         return view('permissions.index',compact('permissions'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }

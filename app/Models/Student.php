@@ -10,12 +10,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Student extends Model
 {
     use HasFactory, SoftDeletes;
-    public $incrementing = false;
-    protected $keytype = 'string';
+
+    public $incrementing = false; // Non-auto-increment
+    protected $keyType = 'string'; // Tipe kunci adalah string
 
     protected $primaryKey = 'id';
 
     protected $fillable = [
+        'id', // ID UUID diizinkan untuk mass assignment
         'name',
         'grade',
         'gender',
@@ -26,12 +28,10 @@ class Student extends Model
         'deleted_at',
         'deleted_by',
     ];
-    
 
-    // Laravel will use this to bind models to routes
     public function getRouteKeyName()
     {
-        return 'id';
+        return 'id'; // Menggunakan UUID di rute
     }
 
     protected $dates = ['deleted_at'];
