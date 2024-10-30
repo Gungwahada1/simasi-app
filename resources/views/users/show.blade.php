@@ -7,9 +7,10 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white p-6 overflow-hidden shadow-sm sm:rounded-lg">
-                <h1 class="text-xl font-bold mb-4">{{ $user->name }}</h1>
-                <p class="text-gray-700 mb-4">{{ $user->email}}</p>
-                <p class="text-gray-700 mb-4">{{ $user->status_user}}</p>
+                <h1 class="text-3xl font-bold mb-4">{{ $user->name }}</h1>
+                <p class="text-xl font-bold mb-4">User Information</p>
+                <p class="text-gray-700 mb-4"><b>Email: </b>{{ $user->email}}</p>
+                <p class="text-gray-700 mb-4"><b>Role: </b>{{ $user->status_user}}</p>
                 <div class="grid grid-cols-2 gap-2 mb-4">
                     <p class="font-bold text-gray-700">First Name</p>
                     <p class="font-bold text-gray-700">Last Name</p>

@@ -40,11 +40,19 @@ class PermissionController extends Controller
     {
         $request->validate([
             'name' => 'required|array',
-            'name.*' => 'required|string|unique:permissions,name',
+            'name.*' => 'nullable|string|unique:permissions,name',
         ]);
-    
+
+        if (empty(array_filter($request->name))) {
+            return redirect()->back()
+                ->withErrors(['name' => 'At least one permission name is required.'])
+                ->withInput();
+        }
+        
         foreach ($request->name as $permissionName) {
-            Permission::create(['name' => $permissionName]);
+            if (!empty($permissionName)) {
+                Permission::create(['name' => $permissionName]);
+            }
         }
         return redirect()->route('permissions.index')->with('success', 'Permission created successfully!');
     }
@@ -72,14 +80,20 @@ class PermissionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $permission = Permission::findOrFail($id);
         $request->validate([
             'name' => 'required|unique:permissions,name,'.$id.',id'
         ]);
 
-        $permission->update([
-            'name' => $request->name,
-        ]);
+        $permission = Permission::findOrFail($id);
+        $input = $request->only('name');
+        $changes = array_diff_assoc($input, $permission->only('name'));
+
+        if (empty($changes)) {
+            return redirect()->route('permissions.edit', $id)
+                ->with('info', 'No changes were made to the permission.');
+        }
+        $permission->update($input);
+
         return redirect()->route('permissions.index')->with('warning', 'Permission updated successfully!');
     }
 

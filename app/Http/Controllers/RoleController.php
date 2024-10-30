@@ -82,22 +82,38 @@ class RoleController extends Controller
     public function update(Request $request, $id)
     {
         $role = Role::findOrFail($id);
+
+        // Validasi input
         $request->validate([
-            'name' => 'required|unique:roles,name,'.$id.',id'
+            'name' => 'required|unique:roles,name,' . $id . ',id',
         ]);
 
-        $role->update([
-            'name' => $request->name,
-        ]);
+        // Cek apakah ada perubahan pada 'name' atau 'permission'
+        $nameChanged = $role->name !== $request->name;
+        $permissionsChanged = !empty($request->permission) 
+            ? $role->permissions->pluck('id')->sort()->values()->toArray() !== collect($request->permission)->sort()->values()->toArray()
+            : $role->permissions->isNotEmpty();
 
-        if (!empty($request->permission))
-        {
-            $role->syncPermissions($request->permission);
-        } else {
-            $role->syncPermissions([]);
+        // Jika tidak ada perubahan, kembali ke halaman edit dengan pesan
+        if (!$nameChanged && !$permissionsChanged) {
+            return redirect()->route('roles.edit', $id)
+                ->with('info', 'No changes were made to the role.');
         }
+        // Update 'name' jika berubah
+        if ($nameChanged) {
+            $role->update([
+                'name' => $request->name,
+            ]);
+        }
+        // Sinkronisasi permissions jika berubah
+        if ($permissionsChanged) {
+            $role->syncPermissions($request->permission ?? []);
+        }
+
+        // Jika ada perubahan, kembali ke index dengan pesan sukses
         return redirect()->route('roles.index')->with('warning', 'Role updated successfully!');
     }
+
 
     public function destroy($id)
     {

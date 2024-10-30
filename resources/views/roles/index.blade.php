@@ -65,18 +65,13 @@
                                 <td class="text-center">{{ ++$i }}</td>
                                 <td class="text-center">{{ $role->name }}</td>
                                 <td class="text-center">
-                                    <ul class="list-none">
-                                        @foreach ($role->permissions->pluck('name') as $permission)
-                                            <li>{{ $permission }}</li>
-                                        @endforeach
-                                    </ul>
-                                </td>
+                                    <a class="text-blue-600 hover:text-blue-700 hover:underline"
+                                       href="{{ route('roles.show',$role->id) }}">
+                                        Show Permissions
+                                    </a>
+                                </td>                                                                
                                 <td class="text-center">{{ \Carbon\Carbon::parse($role->created_at)->format('d M, Y') }}</td>
                                 <td class="text-center">
-                                    <a class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow"
-                                       href="{{ route('roles.show',$role->id) }}">
-                                        <i class="fa-solid fa-list"></i> Show
-                                    </a>
                                     <a class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg shadow"
                                        href="{{ route('roles.edit',$role->id) }}">
                                         <i class="fa-solid fa-pen-to-square"></i> Edit

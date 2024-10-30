@@ -7,7 +7,8 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white p-6 overflow-hidden shadow-sm sm:rounded-lg">
-                <h1 class="text-xl font-bold mb-4">{{ $subject->subject_name }}</h1>
+                <h1 class="text-3xl font-bold mb-4">{{ $subject->subject_name }}</h1>
+                <p class="text-xl font-bold mb-4">Subject Description</p>
                 <p class="text-gray-700 mb-6">{{ $subject->subject_description }}</p>
                 <div class="flex space-x-4">
                     <a class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg shadow"

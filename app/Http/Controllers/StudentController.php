@@ -77,15 +77,22 @@ class StudentController extends Controller
 
     public function update(Request $request, $id): RedirectResponse
     {
+        $student = Student::findOrFail($id);
         $request->validate([
             'name' => 'required',
             'grade' => 'required',
             'gender' => 'required|in:M,F', // Validasi gender sesuai ENUM
         ]);
-
-        $student = Student::findOrFail($id);
-        $input = $request->all();
         
+        $input = $request->only(['name', 'grade', 'gender']);
+        
+        // Cek jika input sama dengan data saat ini, batalkan update
+        $changes = array_diff_assoc($input, $student->only(['name', 'grade', 'gender']));
+
+        if (empty($changes)) {
+            return redirect()->route('students.edit', $id)
+                ->with('info', 'No changes were made to the student.');
+        }
         // Update data student
         $student->update($input);
 

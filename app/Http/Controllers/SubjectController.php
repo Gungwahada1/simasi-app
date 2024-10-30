@@ -71,11 +71,14 @@ class SubjectController extends Controller
             'subject_description' => 'required',
         ]);
 
-        $subject->update([
-            'subject_name' => $request->subject_name,
-            'subject_description' => $request->subject_description,
-            'updated_at' => Carbon::now(),
-        ]);
+        $input = $request->only(['subject_name', 'subject_description']);
+        $changes = array_diff_assoc($input, $subject->only(['subject_name', 'subject_description']));
+
+        if (empty($changes)) {
+            return redirect()->route('subjects.edit', $subject->id)
+                ->with('info', 'No changes were made to the subject.');
+        }
+        $subject->update(array_merge($input, ['updated_at' => Carbon::now()]));
         return redirect()->route('subjects.index')->with('warning', 'Subject updated successfully!');
     }
 

@@ -7,7 +7,8 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white p-6 overflow-hidden shadow-sm sm:rounded-lg">
-                <h1 class="text-xl font-bold mb-4">{{ $student->name }}</h1>
+                <h1 class="text-3xl font-bold mb-4">{{ $student->name }}</h1>
+                <p class="text-xl font-bold mb-4">Identity Description</p>
                 <table class="table table-bordered mb-3" style="width: 25%;">
                     <tr>
                         <th class="w-1/5 text-left">Grade</th>
