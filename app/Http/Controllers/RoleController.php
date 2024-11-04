@@ -91,7 +91,7 @@ class RoleController extends Controller
         // Cek apakah ada perubahan pada 'name' atau 'permission'
         $nameChanged = $role->name !== $request->name;
         $permissionsChanged = !empty($request->permission) 
-            ? $role->permissions->pluck('id')->sort()->values()->toArray() !== collect($request->permission)->sort()->values()->toArray()
+            ? $role->permissions->pluck('name')->sort()->values()->toArray() !== collect($request->permission)->sort()->values()->toArray()
             : $role->permissions->isNotEmpty();
 
         // Jika tidak ada perubahan, kembali ke halaman edit dengan pesan
