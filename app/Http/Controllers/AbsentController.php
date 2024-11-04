@@ -21,14 +21,24 @@ class AbsentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        // $products = Product::latest()->paginate(5);
+        $query = Absent::query();
 
-        // return view('products.index',compact('products'))
-        //     ->with('i', (request()->input('page', 1) - 1) * 5);
-        return view('dashboard');
+        if ($request->filled('search')) {
+            $searchTerm = $request->search;
+    
+            $query->where('name', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('grade', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('gender', 'like', '%' . $searchTerm . '%');
+        }
+
+        $data = $query->paginate(10);
+
+        return view('absents.index', ['data' => $data])
+            ->with('i', ($request->input('page', 1) - 1) * 10);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -38,7 +48,7 @@ class AbsentController extends Controller
     public function create(): View
     {
         // return view('products.create');
-        return view('dashboard');
+        return view('absents.create');
     }
 
     /**
