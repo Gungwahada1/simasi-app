@@ -27,7 +27,7 @@
                             </div>
                         </div>
                         <a href="{{ route('users.index') }}">
-                            <div class="absolute text-sm right-[15px] bottom-[-15px] flex justify-end py-[2px] px-[10px] bg-blue-800 text-white rounded-md transition-transform duration-200 ease-in-out hover:bg-blue-700">
+                            <div class="absolute text-sm right-[15px] bottom-[-10px] flex justify-end py-[2px] px-[10px] bg-blue-800 text-white rounded-md transition-transform duration-200 ease-in-out hover:bg-blue-700">
                                 {{ __('Go to Data') }}
                             </div>  
                         </a>

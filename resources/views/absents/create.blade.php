@@ -127,7 +127,7 @@
                                 </div>
                                 <div id="map" class="border border-black w-full h-[500px] mt-[20px]"></div>
                                 <div class="flex gap-[30px] mt-2">
-                                    <button id="setStartLocation" class="w-full bg-blue-800 text-center py-2 text-white rounded-md">Set Start Location</button>
+                                    <a href="#" onclick="getLocation()" id="setStartLocation" class="w-full bg-blue-800 text-center py-2 text-white rounded-md">Set Start Location</a>
                                     <button id="setEndLocation" class="w-full bg-blue-800 text-center py-2 text-white rounded-md">Set End Location</button>
                                 </div>
                             </div>
@@ -147,7 +147,6 @@
                                     <span class="text-red-500 text-sm">{{ $message }}</span>
                                 @enderror
                             </div>
-                            
 
                             <!-- Submit Button -->
                             <div class="flex items-center justify-end mt-4">
@@ -260,5 +259,30 @@
         isSettingStartLocation = false;
         if (marker) marker.setMap(null); 
     });
+    //get location
+        function getLocation() {
+            if ("geolocation" in navigator) {
+            console.log("Geolocation is available")
+            } else {
+            console.log("Geolocation is not available")
+            }
+            if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                // Get latitude and longitude
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+                console.log(latitude, longitude)
+                // Update the input field's value
+                const locationInput = document.getElementById('location_start');
+                locationInput.value = `${latitude},${longitude}`;
+            }, (error) => {
+                console.error("Error getting location:", error.message);
+            });
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+        }
+    
     </script>
+    https://www.google.com/maps/@-8.5839768,115.2886348,15.75z?hl=id&entry=ttu&g_ep=EgoyMDI0MTAyOS4wIKXMDSoASAFQAw%3D%3D
 </x-app-layout>
