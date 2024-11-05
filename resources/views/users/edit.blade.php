@@ -28,16 +28,18 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="status_user" class="block text-gray-700">Roles</label>
-                        <select name="status_user" id="status_user" 
-                                class="form-select rounded-md shadow-sm mt-1 block w-full" required>
-                            <option value="" disabled>Select Role</option>
-                            <option value="Magang" {{ old('status_user', $user->status_user) == 'Magang' ? 'selected' : '' }}>Magang</option>
-                            <option value="Paruh Waktu" {{ old('status_user', $user->status_user) == 'Paruh Waktu' ? 'selected' : '' }}>Paruh Waktu</option>
-                            <option value="Pegawai Tetap" {{ old('status_user', $user->status_user) == 'Pegawai Tetap' ? 'selected' : '' }}>Pegawai Tetap</option>
-                        </select>
-                    </div>
-            
+                    <label for="status_user" class="block text-gray-700">Roles</label>
+                    <select name="status_user" id="status_user" 
+                    class="form-select rounded-md shadow-sm mt-1 block w-full" required>
+                    <option value="" disabled>Select Role</option>
+                    @foreach($roles as $role)
+                    <option value="{{ $role->name }}" 
+                    {{ old('status_user', $user->status_user) == $role->name ? 'selected' : '' }}>
+                    {{ $role->name }}
+                    </option>
+                    @endforeach
+                    </select>
+                </div>
                     <div class="flex items-center justify-end mt-4">
                         <a href="{{ route('users.index') }}" 
                            class="mr-4 inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-300 hover:bg-gray-400 rounded-md shadow">
