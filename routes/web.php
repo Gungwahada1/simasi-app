@@ -7,7 +7,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\StoreUserController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__.'/auth.php';
@@ -16,9 +16,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -35,3 +34,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('students', StudentController::class);
     Route::resource('subjects', SubjectController::class);
 });
+
+// routes/web.php
+Route::post('/save-location', [LocationController::class, 'store']);
+

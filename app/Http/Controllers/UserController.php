@@ -20,6 +20,7 @@ class UserController extends Controller
 {
     public function index(Request $request): View
     {
+
         $query = DB::table('users');
 
         if ($request->filled('search')) {
@@ -29,10 +30,10 @@ class UserController extends Controller
                   ->orWhere('email', 'like', '%' . $searchTerm . '%')
                   ->orWhere('status_user', 'like', '%' . $searchTerm . '%');
         }
-        $data = $query->paginate(5);
+        $data = $query->paginate(10);
 
         return view('users.index', ['data' => $data])
-            ->with('i', ($request->input('page', 1) - 1) * 5);
+            ->with('i', ($request->input('page', 1) - 1) * 10);
     }
 
     public function create(): View
