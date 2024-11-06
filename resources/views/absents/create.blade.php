@@ -13,19 +13,10 @@
                         @csrf
 
                         <div class="grid grid-cols-1 gap-6">
-                            <!-- User_id -->
-                            <div>
-                                <label for="user_id" class="block font-medium text-sm text-gray-700">Name</label>
-                                <input type="text" name="user_id" id="user_id" class="form-input rounded-md shadow-sm mt-1 block w-full" value="{{ old('name') }}">
-                                @error('user_id')
-                                    <span class="text-red-500 text-sm">{{ $message }}</span>
-                                @enderror
-                            </div>
-
                             <!--Detail subject id -->
                             <div>
                                 <label for="detail_subject_id" class="block font-medium text-sm text-gray-700">Detail Subject</label>
-                                <input type="text" name="detail_subject_id" id="detail_subject_id" class="form-input rounded-md shadow-sm mt-1 block w-full" value="{{ old('detail_subject_id') }}">
+                                <input type="text" name="detail_subject_id" id="detail_subject_id" class="form-input rounded-md shadow-sm mt-1 block w-full" value="{{ old('detail_subject_id') }}" placeholder="Masukan Ditail Subject">
                                 @error('detail_subject_id')
                                     <span class="text-red-500 text-sm">{{ $message }}</span>
                                 @enderror
@@ -82,7 +73,10 @@
                                 <div class="w-full">
                                     <div>
                                         <label for="proof_photo_start" class="block font-medium text-sm text-gray-700">Photo Start</label>
-                                        <input type="file" name="proof_photo_start" id="proof_photo_start" class="form-input rounded-md shadow-sm mt-1 block w-full" onchange="previewImage('proof_photo_start', 'img_start')">
+                                        <input type="file" name="proof_photo_start" id="proof_photo_start" 
+                                               class="form-input rounded-md shadow-sm mt-1 block w-full" 
+                                               accept=".png, .jpg, .jpeg" 
+                                               onchange="validateFile(this, 'img_start')">
                                         @error('proof_photo_start')
                                             <span class="text-red-500 text-sm">{{ $message }}</span>
                                         @enderror
@@ -135,14 +129,14 @@
                             
                             <div>
                                 <label for="daily_report" class="block font-medium text-sm text-gray-700">Daily Report</label>
-                                <textarea name="daily_report" id="daily_report" class="form-input resize-none  rounded-md shadow-sm mt-1 block w-full h-[120px]">{{ old('daily_report') }}</textarea>
+                                <textarea placeholder="Please Insert Dialy Report Student With List Number" name="daily_report" id="daily_report" class="form-input resize-none  rounded-md shadow-sm mt-1 block w-full h-[120px]">{{ old('daily_report') }}</textarea>
                                 @error('daily_report')
                                     <span class="text-red-500 text-sm">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div>
                                 <label for="daily_note" class="block font-medium text-sm text-gray-700">Daily Note</label>
-                                <textarea name="daily_note" id="daily_note" class="form-input resize-none  rounded-md shadow-sm mt-1 block w-full h-[120px]">{{ old('daily_note') }}</textarea>
+                                <textarea placeholder="Please Insert Dialy Note Student With List Number" name="daily_note" id="daily_note" class="form-input resize-none  rounded-md shadow-sm mt-1 block w-full h-[120px]">{{ old('daily_note') }}</textarea>
                                 @error('daily_note')
                                     <span class="text-red-500 text-sm">{{ $message }}</span>
                                 @enderror
@@ -150,7 +144,7 @@
 
                             <!-- Submit Button -->
                             <div class="flex items-center justify-end mt-4">
-                                <a href="{{ route('dashboard') }}" 
+                                <a href="{{ route('students.index') }}" 
                                    class="mr-4 inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-300 hover:bg-gray-400 rounded-md shadow">
                                     Cancel
                                 </a>
@@ -282,7 +276,27 @@
             alert("Geolocation is not supported by this browser.");
         }
         }
-    
+
+        //img function 
+        function validateFile(input, imgId) {
+            const file = input.files[0];
+            const maxSize = 2 * 1024 * 1024; // 5 MB in bytes
+            
+            // Check file size
+            if (file && file.size > maxSize) {
+                alert('Batas File Adalah 2 MB.');
+                input.value = ''; // Clear the input if file size is too large
+                return;
+            }
+            
+            // Preview image (optional)
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById(imgId).src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
     </script>
-    https://www.google.com/maps/@-8.5839768,115.2886348,15.75z?hl=id&entry=ttu&g_ep=EgoyMDI0MTAyOS4wIKXMDSoASAFQAw%3D%3D
 </x-app-layout>
