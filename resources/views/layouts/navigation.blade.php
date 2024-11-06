@@ -47,14 +47,14 @@
                     </x-slot>
 
                     <x-slot name="content">
+                        <x-dropdown-link :href="url('absents')">
+                            {{ __('Absents') }}
+                        </x-dropdown-link>
                         <x-dropdown-link :href="url('students')">
                             {{ __('Students') }}
                         </x-dropdown-link>
                         <x-dropdown-link :href="url('subjects')">
                             {{ __('Subjects') }}
-                        </x-dropdown-link>
-                        <x-dropdown-link :href="url('absents')">
-                            {{ __('Absents') }}
                         </x-dropdown-link>
                         <x-dropdown-link :href="url('users')">
                             {{ __('Users') }}

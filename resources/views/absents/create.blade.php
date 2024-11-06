@@ -150,7 +150,7 @@
 
                             <!-- Submit Button -->
                             <div class="flex items-center justify-end mt-4">
-                                <a href="{{ route('students.index') }}" 
+                                <a href="{{ route('dashboard') }}" 
                                    class="mr-4 inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-300 hover:bg-gray-400 rounded-md shadow">
                                     Cancel
                                 </a>

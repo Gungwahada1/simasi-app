@@ -21,7 +21,7 @@ class UserController extends Controller
     public function index(Request $request): View
     {
 
-        $query = DB::table('users');
+        $query = DB::table('users')->whereNull('deleted_at');
 
         if ($request->filled('search')) {
             $searchTerm = $request->search;
@@ -51,9 +51,9 @@ class UserController extends Controller
             'password' => 'required|same:confirm-password',
             'status_user' => 'required|in:Magang,Paruh Waktu,Pegawai Tetap'
         ]);
-        if ($request->user_status == 'Pegawai Tetap') {
+        if ($request->status_user == 'Pegawai Tetap') {
             $user_code = "TCH";
-        } elseif ($request->user_status == 'Paruh Waktu') {
+        } elseif ($request->status_user == 'Paruh Waktu') {
             $user_code = "FRL";
         } else{
             $user_code = "MGG";
@@ -68,6 +68,7 @@ class UserController extends Controller
             'first_name' => $request->name,
             'last_name' => $request->name,
             'username' => $request->name,
+            'status_user' => $request->status_user,
             'nip' => '',
             'is_active' => 1,
             'created_at' => Carbon::now(),
@@ -102,34 +103,64 @@ class UserController extends Controller
 
     public function update(Request $request, $id): RedirectResponse
     {
-        $this->validate($request, [
+        dd($request->all());
+        $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $id,
-            'password' => 'same:confirm-password',
-            'roles' => 'required'
+            'status_user' => 'required|in:Magang,Paruh Waktu,Pegawai Tetap',
+            'first_name' => 'required',
+            'last_name' => 'required'
         ]);
 
-        $input = $request->all();
-        if (!empty($input['password'])) {
-            $input['password'] = Hash::make($input['password']);
+        $user = User::findOrFail($id);
+
+        // Buat user_code baru berdasarkan status_user
+        if ($request->status_user == 'Pegawai Tetap') {
+            $user_code = "TCH";
+        } elseif ($request->status_user == 'Paruh Waktu') {
+            $user_code = "FRL";
         } else {
-            $input = Arr::except($input, array('password'));
+            $user_code = "MGG";
         }
 
-        $user = User::find($id);
-        $user->update($input);
-        DB::table('model_has_roles')->where('model_id', $id)->delete();
+        // Periksa jika ada perubahan data
+        $hasChanges = (
+            $user->name !== $request->name ||
+            $user->email !== $request->email ||
+            $user->first_name !== $request->first_name ||
+            $user->last_name !== $request->last_name ||
+            $user->status_user !== $request->status_user ||
+            !$user->hasRole($request->status_user)
+        );
 
-        $user->assignRole($request->input('roles'));
+        if (!$hasChanges) {
+            // Tidak ada perubahan, kembali ke edit dengan pesan
+            return redirect()->route('users.edit', $user->id)
+                ->with('info', 'No changes were made to the user.');
+        }
+
+        // Update data hanya jika ada perubahan
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'status_user' => $request->status_user,
+            'user_code' => $user_code . rand(0, 999), // Atur ulang hanya jika status_user berubah
+            'updated_at' => Carbon::now(),
+        ]);
+
+        // Update role user
+        $user->syncRoles($request->status_user);
 
         return redirect()->route('users.index')
-            ->with('success', 'User updated successfully');
+            ->with('warning', 'User updated successfully');
     }
 
     public function destroy($id): RedirectResponse
     {
         User::find($id)->delete();
         return redirect()->route('users.index')
-            ->with('success', 'User deleted successfully');
+            ->with('danger', 'User deleted successfully');
     }
 }
