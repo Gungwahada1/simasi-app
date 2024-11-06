@@ -7,8 +7,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use Illuminate\Support\Str;
 use Illuminate\Http\RedirectResponse;
 
 class RoleController extends Controller
@@ -30,7 +31,7 @@ class RoleController extends Controller
     
             $query->where('name', 'like', '%' . $searchTerm . '%');
         }
-        $roles = $query->orderBy('id','DESC')->paginate(10);
+        $roles = $query->orderBy('uuid','DESC')->paginate(10);
         return view('roles.index',compact('roles'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
@@ -47,27 +48,39 @@ class RoleController extends Controller
             'name' => 'required|unique:roles',
         ]);
 
-        // if (empty($request->permission)) {
-        //     return redirect()->back()->withErrors(['permission' => 'At least one permission is required.'])->withInput();
-        // }
-
+        // Buat Role baru dengan UUID
         $role = Role::create([
+            'uuid' => Str::uuid()->toString(),
             'name' => $request->name,
         ]);
 
-        if (!empty($request->permission))
-        {
-            foreach ($request->permission as $name){
-                $role->givePermissionTo($name);
+        // Cek apakah ada permissions yang dipilih
+        if (!empty($request->permission)) {
+            foreach ($request->permission as $permissionUuid) {
+                // Cari permission berdasarkan UUID
+                $permission = Permission::where('uuid', $permissionUuid)->first();
+
+                if ($permission) {
+                    // Masukkan data langsung ke tabel role_has_permissions
+                    DB::table('role_has_permissions')->insert([
+                        'permission_id' => $permission->uuid,
+                        'role_id' => $role->uuid
+                    ]);
+                }
             }
         }
+
         return redirect()->route('roles.index')->with('success', 'Role created successfully!');
     }
 
-    public function show($id): View
+    public function show($uuid): View
     {
-        $role = Role::findOrFail($id);
-        return view('roles.show',compact('role'));
+        // Cari role berdasarkan UUID, bukan ID
+        $role = Role::where('uuid', $uuid)->firstOrFail();
+        dd(Role::with('permissions')->get());
+        return view('roles.show', compact('role'));
+        // $role = Role::where('uuid', $uuid)->with('permissions')->firstOrFail();
+        // return view('roles.show', compact('role'));
     }
 
     public function edit($id): View

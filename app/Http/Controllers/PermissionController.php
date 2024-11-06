@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Support\Str;
 use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
@@ -20,7 +21,7 @@ class PermissionController extends Controller
     
             $query->where('name', 'like', '%' . $searchTerm . '%');
         }
-        $permissions = $query->orderBy('id','DESC')->paginate(10);
+        $permissions = $query->orderBy('uuid','DESC')->paginate(10);
         return view('permissions.index',compact('permissions'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
@@ -51,7 +52,7 @@ class PermissionController extends Controller
         
         foreach ($request->name as $permissionName) {
             if (!empty($permissionName)) {
-                Permission::create(['name' => $permissionName]);
+                Permission::create(['uuid' => Str::uuid()->toString(),'name' => $permissionName]);
             }
         }
         return redirect()->route('permissions.index')->with('success', 'Permission created successfully!');

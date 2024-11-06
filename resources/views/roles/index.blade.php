@@ -66,17 +66,17 @@
                                 <td class="text-center">{{ $role->name }}</td>
                                 <td class="text-center">
                                     <a class="text-blue-600 hover:text-blue-700 hover:underline"
-                                       href="{{ route('roles.show',$role->id) }}">
+                                       href="{{ route('roles.show',$role->uuid) }}">
                                         Show Permissions
                                     </a>
                                 </td>                                                                
                                 <td class="text-center">{{ \Carbon\Carbon::parse($role->created_at)->format('d M, Y') }}</td>
                                 <td class="text-center">
                                     <a class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg shadow"
-                                       href="{{ route('roles.edit',$role->id) }}">
+                                       href="{{ route('roles.edit',$role->uuid) }}">
                                         <i class="fa-solid fa-pen-to-square"></i> Edit
                                     </a>
-                                    <form method="POST" action="{{ route('roles.destroy', $role->id) }}"
+                                    <form method="POST" action="{{ route('roles.destroy', $role->uuid) }}"
                                           style="display:inline" onsubmit="return confirmDelete()">
                                         @csrf
                                         @method('DELETE')

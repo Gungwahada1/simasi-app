@@ -39,6 +39,10 @@ class User extends Authenticatable
         'deleted_at',
         'deleted_by',
     ];
+
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+    protected $keyType = 'string';
     /**
      * The attributes that should be hidden for serialization.
      *
