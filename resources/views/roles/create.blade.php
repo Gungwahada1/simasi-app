@@ -22,8 +22,8 @@
                             <br/>
                             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                                 @foreach($permission as $value)
-                                    <label class="flex items-center" for="permission-{{$value->id}}">
-                                        <input type="checkbox" name="permission[{{$value->id}}]" id="permission-{{$value->id}}" value="{{$value->name}}" class="mr-2">
+                                    <label class="flex items-center" for="permission-{{$value->uuid}}">
+                                        <input type="checkbox" name="permission[{{$value->uuid}}]" id="permission-{{$value->uuid}}" value="{{$value->uuid}}" class="mr-2">
                                         {{ $value->name }}
                                     </label>
                                 @endforeach

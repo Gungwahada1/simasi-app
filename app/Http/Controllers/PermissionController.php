@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
@@ -20,7 +22,7 @@ class PermissionController extends Controller
     
             $query->where('name', 'like', '%' . $searchTerm . '%');
         }
-        $permissions = $query->orderBy('id','DESC')->paginate(10);
+        $permissions = $query->orderBy('created_at','DESC')->paginate(10);
         return view('permissions.index',compact('permissions'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
@@ -51,7 +53,7 @@ class PermissionController extends Controller
         
         foreach ($request->name as $permissionName) {
             if (!empty($permissionName)) {
-                Permission::create(['name' => $permissionName]);
+                Permission::create(['uuid' => Str::uuid()->toString(),'name' => $permissionName]);
             }
         }
         return redirect()->route('permissions.index')->with('success', 'Permission created successfully!');
@@ -68,9 +70,9 @@ class PermissionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id): View
+    public function edit($uuid): View
     {
-        $permission = permission::findOrFail($id); // Ambil data permission
+        $permission = Permission::where('uuid', $uuid)->firstOrFail(); // Ambil data permission
         
         return view('permissions.edit', compact('permission'));
     }
@@ -78,31 +80,31 @@ class PermissionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $uuid)
     {
+        $permission = Permission::where('uuid', $uuid)->firstOrFail();
         $request->validate([
-            'name' => 'required|unique:permissions,name,'.$id.',id'
+            'name' => 'required|unique:permissions,name,' . $uuid . ',uuid',
         ]);
 
-        $permission = Permission::findOrFail($id);
         $input = $request->only('name');
         $changes = array_diff_assoc($input, $permission->only('name'));
 
         if (empty($changes)) {
-            return redirect()->route('permissions.edit', $id)
+            return redirect()->route('permissions.edit', $uuid)
                 ->with('info', 'No changes were made to the permission.');
         }
-        $permission->update($input);
+        
+        DB::table('permissions')->where('uuid', $uuid)->update($input);
 
         return redirect()->route('permissions.index')->with('warning', 'Permission updated successfully!');
     }
-
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy($uuid)
     {
-        Permission::find($id)->delete();
+        DB::table('permissions')->where('uuid', $uuid)->delete();
         return redirect()->route('permissions.index')
             ->with('danger', 'Permission deleted successfully');
     }

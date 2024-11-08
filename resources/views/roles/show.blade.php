@@ -14,23 +14,26 @@
                 </div>
                 <div class="text-gray-700 mb-3">
                     <ul class="list-none grid grid-cols-2 md:grid-cols-4 gap-2">
-                        @foreach ($role->permissions->pluck('name') as $permission)
+                        @foreach ($role->permissions as $permission)
                             <li class="bg-gray-100 px-3 py-1 rounded text-center text-sm font-medium text-gray-800">
-                                {{ $permission }}
+                                {{ $permission->name }}
                             </li>
                         @endforeach
                     </ul>
                 </div>
                 <div class="flex space-x-4 mt-3">
                     <a class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg shadow"
-                        href="{{ route('roles.edit',$role->id) }}">
+                        href="{{ route('roles.edit',$role->uuid) }}">
                         <i class="fa-solid fa-pen-to-square"></i> Edit
                     </a>
-                    <form action="{{ route('roles.destroy', $role->id) }}" method="POST" onsubmit="return confirmDelete()">
+                    <form action="{{ route('roles.destroy', $role->uuid) }}" method="POST" onsubmit="return confirmDelete()">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg shadow">Delete</button>
                     </form>
+                    <a href="{{ route('roles.index') }}" class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 rounded-lg shadow">
+                        {{ __('Back') }}
+                    </a>
                 </div>
             </div>
         </div>

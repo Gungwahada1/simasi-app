@@ -65,7 +65,7 @@
                             <th width="15%">Nama</th>
                             <th width="15%">Detail Subject</th>
                             <th width="15%">Status</th>
-                            <th width="15%">Total Ngajar</th>
+                            <th width="15%">Tanggal Ngajar</th>
                             <th width="10%">Action</th>
                         </tr>
                         @foreach ($data as $key => $absent)
@@ -74,13 +74,13 @@
                                 <td class="text-center">{{ $absent->name }}</td>
                                 <td class="text-center">{{ $absent->detail_subject }}</td>
                                 <td class="text-center">{{ $absent->status }}</td>
-                                <td class="text-center">{{ $absent->name }}</td>
+                                <td class="text-center">{{ $absent->start_date_time }}</td>
                                 <td class="text-center">
                                     <a class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow"
                                        href="{{ route('absents.show',$absent->id) }}">
                                         <i class="fa-solid fa-list"></i> Show
                                     </a>
-                                    <a class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg shadow"
+                                    <a class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-black bg-yellow-400 hover:bg-yellow-500 rounded-lg shadow"
                                        href="{{ route('absents.edit',$absent->id) }}">
                                         <i class="fa-solid fa-pen-to-square"></i> Edit
                                     </a>
