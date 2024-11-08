@@ -103,7 +103,6 @@ class UserController extends Controller
 
     public function update(Request $request, $id): RedirectResponse
     {
-        dd($request->all());
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $id,

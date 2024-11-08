@@ -71,7 +71,7 @@
                                        href="{{ route('students.show',$student->id) }}">
                                         <i class="fa-solid fa-list"></i> Show
                                     </a>
-                                    <a class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg shadow"
+                                    <a class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-black bg-yellow-400 hover:bg-yellow-500 rounded-lg shadow"
                                        href="{{ route('students.edit',$student->id) }}">
                                         <i class="fa-solid fa-pen-to-square"></i> Edit
                                     </a>

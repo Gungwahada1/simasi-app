@@ -18,7 +18,7 @@
                             </div>
                         </div>
                     @endif
-                    <form action="{{ route('roles.update', $role->id) }}" method="POST" class="space-y-5 p-5">
+                    <form action="{{ route('roles.update', $role->uuid) }}" method="POST" class="space-y-5 p-5">
                         @csrf
                         @method('PUT')
                         <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
@@ -31,8 +31,8 @@
                                 <br/>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
                                     @foreach($permission as $value)
-                                        <label class="flex items-center" for="permission-{{$value->id}}">
-                                            <input {{($hasPermissions->contains($value->name)) ? 'checked' : ''}} type="checkbox" name="permission[{{$value->id}}]" id="permission-{{$value->id}}" value="{{$value->name}}" class="mr-2">
+                                        <label class="flex items-center" for="permission-{{$value->uuid}}">
+                                            <input {{($hasPermissions->contains($value->name)) ? 'checked' : ''}} type="checkbox" name="permission[{{$value->uuid}}]" id="permission-{{$value->uuid}}" value="{{$value->uuid}}" class="mr-2">
                                             {{ $value->name }}
                                         </label>
                                     @endforeach

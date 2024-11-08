@@ -18,7 +18,7 @@
                             </div>
                         </div>
                     @endif
-                    <form action="{{ route('permissions.update', $permission->id) }}" method="POST" class="space-y-4">
+                    <form action="{{ route('permissions.update', $permission->uuid) }}" method="POST" class="space-y-4">
                         @csrf
                         @method('PUT')
                         <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
