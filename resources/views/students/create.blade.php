@@ -16,7 +16,7 @@
                             <!-- Name -->
                             <div>
                                 <label for="name" class="block font-medium text-sm text-gray-700">Name</label>
-                                <input type="text" name="name" id="name" class="form-input rounded-md shadow-sm mt-1 block w-full" value="{{ old('name') }}">
+                                <input type="text" placeholder="Insert Name Student"  name="name" id="name" class="form-input rounded-md shadow-sm mt-1 block w-full" value="{{ old('name') }}">
                                 @error('name')
                                     <span class="text-red-500 text-sm">{{ $message }}</span>
                                 @enderror
@@ -25,7 +25,7 @@
                             <!-- Grade -->
                             <div>
                                 <label for="grade" class="block font-medium text-sm text-gray-700">Grade</label>
-                                <input type="text" name="grade" id="grade" class="form-input rounded-md shadow-sm mt-1 block w-full" value="{{ old('grade') }}">
+                                <input type="text" placeholder="Insert Grade Student"  name="grade" id="grade" class="form-input rounded-md shadow-sm mt-1 block w-full" value="{{ old('grade') }}">
                                 @error('grade')
                                     <span class="text-red-500 text-sm">{{ $message }}</span>
                                 @enderror
