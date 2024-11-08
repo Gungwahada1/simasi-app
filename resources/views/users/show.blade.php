@@ -1,13 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Show User') }}
-            </h2>
-            <a href="{{ route('users.index') }}" class="bg-red-500 text-white font-medium px-3 py-2 rounded-md hover:bg-red-600">
-                {{ __('Back') }}
-            </a>
-        </div>
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Show User') }}
+        </h2>
     </x-slot>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -33,6 +28,9 @@
                         @method('DELETE')
                         <button type="submit" class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg shadow">Delete</button>
                     </form>
+                    <a href="{{ route('users.index') }}" class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 rounded-lg shadow">
+                        {{ __('Back') }}
+                    </a>
                 </div>
             </div>
         </div>

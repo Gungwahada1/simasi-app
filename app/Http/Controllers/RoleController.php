@@ -31,7 +31,7 @@ class RoleController extends Controller
     
             $query->where('name', 'like', '%' . $searchTerm . '%');
         }
-        $roles = $query->orderBy('uuid','DESC')->paginate(10);
+        $roles = $query->orderBy('created_at','DESC')->paginate(10);
         return view('roles.index',compact('roles'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
@@ -75,52 +75,91 @@ class RoleController extends Controller
 
     public function show($uuid): View
     {
-        // Cari role berdasarkan UUID, bukan ID
-        $role = Role::where('uuid', $uuid)->firstOrFail();
-        dd(Role::with('permissions')->get());
+        // Mengambil role dan permissions-nya menggunakan query builder
+        $role = DB::table('roles')->where('roles.uuid', $uuid)->first();
+
+        $permissions = DB::table('permissions')
+            ->join('role_has_permissions', 'permissions.uuid', '=', 'role_has_permissions.permission_id')
+            ->where('role_has_permissions.role_id', $role->uuid)
+            ->select('permissions.name')
+            ->get();
+
+        // Mengonversi hasil ke bentuk yang sesuai untuk tampilan
+        $role = (object) array_merge((array) $role, ['permissions' => $permissions]);
+
         return view('roles.show', compact('role'));
-        // $role = Role::where('uuid', $uuid)->with('permissions')->firstOrFail();
-        // return view('roles.show', compact('role'));
     }
 
-    public function edit($id): View
+    public function edit($uuid): View
     {
-        $role = Role::findOrFail($id);
-        $permission = Permission::get();
-        $hasPermissions = $role->permissions->pluck('name');
-        
-        return view('roles.edit', compact('role','permission','hasPermissions'));
+        // Ambil role berdasarkan uuid
+        $role = DB::table('roles')->where('uuid', $uuid)->first();
+        // Ambil semua permissions
+        $permission = DB::table('permissions')->get();
+        // Ambil permissions yang dimiliki oleh role tertentu
+        $hasPermissions = DB::table('permissions')
+            ->join('role_has_permissions', 'permissions.uuid', '=', 'role_has_permissions.permission_id')
+            ->where('role_has_permissions.role_id', $role->uuid)
+            ->pluck('permissions.name'); // pluck nama permission untuk mengecek centang
+
+        // Ubah $role menjadi objek dan tambahkan hasPermissions ke dalamnya untuk konsistensi
+        $role = (object) array_merge((array) $role, ['permissions' => $hasPermissions]);
+
+        return view('roles.edit', compact('role', 'permission', 'hasPermissions'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $uuid)
     {
-        $role = Role::findOrFail($id);
-
+        $role = DB::table('roles')->where('uuid', $uuid)->first();
         // Validasi input
         $request->validate([
-            'name' => 'required|unique:roles,name,' . $id . ',id',
+            'name' => 'required|unique:roles,name,' . $uuid . ',uuid',
         ]);
 
         // Cek apakah ada perubahan pada 'name' atau 'permission'
         $nameChanged = $role->name !== $request->name;
-        $permissionsChanged = !empty($request->permission) 
-            ? $role->permissions->pluck('name')->sort()->values()->toArray() !== collect($request->permission)->sort()->values()->toArray()
-            : $role->permissions->isNotEmpty();
-
+        $currentPermissions = DB::table('permissions')
+            ->join('role_has_permissions', 'permissions.uuid', '=', 'role_has_permissions.permission_id')
+            ->where('role_has_permissions.role_id', $role->uuid)
+            ->pluck('permissions.uuid')
+            ->sort()
+            ->values()
+            ->toArray();
+        $newPermissions = DB::table('permissions')
+            ->whereIn('uuid', $request->permission ?? [])
+            ->pluck('uuid')
+            ->sort()
+            ->values()
+            ->toArray();
+        $permissionsChanged = $currentPermissions !== $newPermissions;
+    
         // Jika tidak ada perubahan, kembali ke halaman edit dengan pesan
         if (!$nameChanged && !$permissionsChanged) {
-            return redirect()->route('roles.edit', $id)
+            return redirect()->route('roles.edit', $uuid)
                 ->with('info', 'No changes were made to the role.');
         }
-        // Update 'name' jika berubah
+        // Update 'name' jika ada perubahan
         if ($nameChanged) {
-            $role->update([
-                'name' => $request->name,
-            ]);
+            DB::table('roles')
+                ->where('uuid', $uuid)
+                ->update(['name' => $request->name]);
         }
-        // Sinkronisasi permissions jika berubah
+        // Sinkronisasi permissions jika ada perubahan
         if ($permissionsChanged) {
-            $role->syncPermissions($request->permission ?? []);
+            // Hapus permissions lama
+            DB::table('role_has_permissions')
+                ->where('role_id', $role->uuid)
+                ->delete();
+    
+            // Tambahkan permissions baru
+            $rolePermissions = array_map(function ($permissionId) use ($role) {
+                return [
+                    'role_id' => $role->uuid,
+                    'permission_id' => $permissionId,
+                ];
+            }, $newPermissions);
+    
+            DB::table('role_has_permissions')->insert($rolePermissions);
         }
 
         // Jika ada perubahan, kembali ke index dengan pesan sukses
@@ -128,9 +167,9 @@ class RoleController extends Controller
     }
 
 
-    public function destroy($id)
+    public function destroy($uuid)
     {
-        Role::find($id)->delete();
+        DB::table('roles')->where('uuid', $uuid)->delete();
         return redirect()->route('roles.index')
             ->with('danger', 'Role deleted successfully');
     }

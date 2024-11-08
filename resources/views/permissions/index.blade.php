@@ -65,7 +65,7 @@
                                 <td class="text-center">{{ $permission->name }}</td>
                                 <td class="text-center">{{ \Carbon\Carbon::parse($permission->created_at)->format('d M, Y') }}</td>
                                 <td class="text-center">
-                                    <a class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg shadow"
+                                    <a class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-black bg-yellow-400 hover:bg-yellow-500 rounded-lg shadow"
                                        href="{{ route('permissions.edit',$permission->uuid) }}">
                                         <i class="fa-solid fa-pen-to-square"></i> Edit
                                     </a>
