@@ -48,8 +48,10 @@ class RolePermissionSeeder extends Seeder
         $roleParuhWaktu->syncPermissions([
             'absent-index',
             'absent-create',
+            'absent-store',
             'absent-show',
             'absent-edit',
+            'absent-update',
         ]);
 
         // Membuat role "Pegawai Tetap" dengan UUID dan menetapkan permissions

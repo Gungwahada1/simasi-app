@@ -42,9 +42,9 @@ class RegisteredUserController extends Controller
 
 //        dd(request()->all());
 
-        if ($request->user_status == 'Pegawai Tetap') {
+        if ($request->status_user == 'Pegawai Tetap') {
             $user_code = "TCH";
-        } elseif ($request->user_status == 'Paruh Waktu') {
+        } elseif ($request->status_user == 'Paruh Waktu') {
             $user_code = "FRL";
         } else{
             $user_code = "MGG";
@@ -59,7 +59,7 @@ class RegisteredUserController extends Controller
             'first_name' => $request->name,
             'last_name' => $request->name,
             'username' => $request->name,
-            'status_user' => $request->user_status,
+            'status_user' => $request->status_user,
             'nip' => '',
             'is_active' => 1,
             'created_at' => Carbon::now(),
@@ -69,17 +69,7 @@ class RegisteredUserController extends Controller
             'deleted_at' => null,
             'deleted_by' => null,
         ]);
-
-//        if ($request->user_status == 'Pegawai Tetap') {
-//            $role = Role::firstOrCreate(['name' => 'Pegawai Tetap']);
-//        } elseif ($request->user_status == 'Paruh Waktu') {
-//            $role = Role::firstOrCreate(['name' => 'Paruh Waktu']);
-//        } else{
-//            $role = Role::firstOrCreate(['name' => 'Magang']);
-//        }
-//        $permissions = Permission::pluck('id','id')->all();
-//        $role->syncPermissions($permissions);
-//        $user->assignRole([$role->id]);
+        $user->assignRole($request->status_user);
 
         event(new Registered($user));
 
