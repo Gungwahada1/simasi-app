@@ -18,19 +18,16 @@
 
         <!-- User Status -->
         <div class="mt-4">
-            <x-input-label for="user_status" :value="__('Your Status')" />
-            <select id="user_status" name="user_status" class="block mt-1 w-full" required>
-                <option value="Pegawai Tetap" {{ old('user_status') == 'Pegawai Tetap' ? 'selected' : '' }}>
-                    Pegawai Tetap
+            <x-input-label for="status_user" :value="__('Your Status')" />
+            <select id="status_user" name="status_user" class="block mt-1 w-full" required>
+                <option value="" disabled selected>Select Status</option>
+                @foreach ($roles as $role)
+                <option value="{{ $role->name }}" {{ old('status_user') == $role->name ? 'selected' : '' }}>
+                    {{ $role->name }}
                 </option>
-                <option value="Paruh Waktu" {{ old('user_status') == 'Paruh Waktu' ? 'selected' : '' }}>
-                    Paruh Waktu
-                </option>
-                <option value="Magang" {{ old('user_status') == 'Magang' ? 'selected' : '' }}>
-                    Magang
-                </option>
+                @endforeach
             </select>
-            <x-input-error :messages="$errors->get('user_status')" class="mt-2" />
+            <x-input-error :messages="$errors->get('status_user')" class="mt-2" />
         </div>
 
         <!-- Password -->
