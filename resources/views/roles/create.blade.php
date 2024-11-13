@@ -28,9 +28,14 @@
                                     </label>
                                 @endforeach
                             </div>
-                            {{-- @error('permission')
-                                <span class="text-red-500 text-sm">{{ $message }}</span>
-                            @enderror --}}
+                            <div class="mt-4">
+                                <button type="button" id="check-all" class="text-blue-600 underline mr-4">
+                                    Check All
+                                </button>
+                                <button type="button" id="uncheck-all" class="text-blue-600 underline">
+                                    Unselect All
+                                </button>
+                            </div>
                         </div>
                     </div>
             
@@ -48,4 +53,15 @@
             </div>
         </div>
     </div>
+    <script>
+        document.getElementById('check-all').addEventListener('click', function() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"][name^="permission"]');
+            checkboxes.forEach(checkbox => checkbox.checked = true);
+        });
+
+        document.getElementById('uncheck-all').addEventListener('click', function() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"][name^="permission"]');
+            checkboxes.forEach(checkbox => checkbox.checked = false);
+        });
+    </script>
 </x-app-layout>
