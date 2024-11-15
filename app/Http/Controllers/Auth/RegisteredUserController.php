@@ -46,6 +46,10 @@ class RegisteredUserController extends Controller
             $user_code = "TCH";
         } elseif ($request->status_user == 'Paruh Waktu') {
             $user_code = "FRL";
+        } elseif ($request->status_user == 'Admin') {
+            $user_code = "ADM";
+        } elseif ($request->status_user == 'Developer') {
+            $user_code = "DEV";
         } else{
             $user_code = "MGG";
         }

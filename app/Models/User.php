@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -67,6 +68,13 @@ class User extends Authenticatable
     }
 
     protected $dates = ['deleted_at'];
+    protected static function booted()
+    {
+        static::deleting(function ($user) {
+            $user->deleted_by = Auth::user()->id;
+            $user->save();
+        });
+    }
 
     public function absents(): HasMany
     {

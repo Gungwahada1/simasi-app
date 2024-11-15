@@ -48,9 +48,11 @@
                                 Search
                             </button>
                         </form>
+                        @if (auth()->user()->hasRole('Pegawai Tetap') || auth()->user()->hasRole('Admin') || auth()->user()->hasRole('Developer'))
                         <a href="{{ route('subjects.create') }}" class="inline-flex items-center px-4 py-2 m-3 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow">
                             Add Subject
                         </a>
+                        @endif
                     </div>
                     <table class="table table-bordered" style="width: 100%;">
                         <tr class="bg-gray-100">
@@ -69,6 +71,7 @@
                                        href="{{ route('subjects.show',$subject->id) }}">
                                         <i class="fa-solid fa-list"></i> Show
                                     </a>
+                                    @if (auth()->user()->hasRole('Pegawai Tetap') || auth()->user()->hasRole('Admin') || auth()->user()->hasRole('Developer'))
                                     <a class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-black bg-yellow-400 hover:bg-yellow-500 rounded-lg shadow"
                                        href="{{ route('subjects.edit',$subject->id) }}">
                                         <i class="fa-solid fa-pen-to-square"></i> Edit
@@ -82,6 +85,7 @@
                                             <i class="fa-solid fa-trash"></i> Delete
                                         </button>
                                     </form>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
