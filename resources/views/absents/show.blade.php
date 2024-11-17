@@ -28,7 +28,7 @@
                         @method('DELETE')
                         <button type="submit" class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg shadow">Delete</button>
                     </form>
-                    <a href="{{ route('absents.index') }}" class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 rounded-lg shadow">
+                    <a href="{{ route('absents.index') }}" class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-gray-700 bg-gray-300 hover:bg-gray-400 rounded-lg shadow">
                         {{ __('Back') }}
                     </a>
                 </div>

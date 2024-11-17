@@ -19,7 +19,18 @@
                         <td class="text-gray-700 mb-6">{{ $student->gender == 'M' ? 'Male' : 'Female' }}</td>
                     </tr>
                 </table>
+                <p class="text-base font-bold mb-4">Subjects</p>
+                <div class="text-gray-700 mb-3">
+                    <ul class="list-none grid grid-cols-2 md:grid-cols-4 gap-2">
+                        @foreach ($subjects as $subject)
+                            <li class="bg-gray-100 px-3 py-1 rounded text-center text-sm font-medium text-gray-800">
+                                {{ $subject->subject_name }}
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
                 <div class="flex space-x-4">
+                    @if (auth()->user()->hasRole('Pegawai Tetap') || auth()->user()->hasRole('Admin') || auth()->user()->hasRole('Developer'))    
                     <a class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg shadow"
                         href="{{ route('students.edit',$student->id) }}">
                         <i class="fa-solid fa-pen-to-square"></i> Edit
@@ -29,7 +40,8 @@
                         @method('DELETE')
                         <button type="submit" class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg shadow">Delete</button>
                     </form>
-                    <a href="{{ route('students.index') }}" class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 rounded-lg shadow">
+                    @endif
+                    <a href="{{ route('students.index') }}" class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-gray-700 bg-gray-300 hover:bg-gray-400 rounded-lg shadow">
                         {{ __('Back') }}
                     </a>
                 </div>

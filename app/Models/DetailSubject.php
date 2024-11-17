@@ -22,4 +22,7 @@ class DetailSubject extends Model
         'deleted_at',
         'deleted_by',
     ];
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+    protected $keyType = 'string';
 }

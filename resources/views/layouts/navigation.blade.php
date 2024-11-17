@@ -56,15 +56,17 @@
                         <x-dropdown-link :href="url('subjects')">
                             {{ __('Subjects') }}
                         </x-dropdown-link>
-                        <x-dropdown-link :href="url('users')">
-                            {{ __('Users') }}
-                        </x-dropdown-link>
-                        <x-dropdown-link :href="url('roles')">
-                            {{ __('Roles') }}
-                        </x-dropdown-link>
-                        <x-dropdown-link :href="url('permissions')">
-                            {{ __('Permissions') }}
-                        </x-dropdown-link>
+                        @if (auth()->user()->hasRole('Pegawai Tetap') || auth()->user()->hasRole('Admin') || auth()->user()->hasRole('Developer'))
+                            <x-dropdown-link :href="url('users')">
+                                {{ __('Users') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="url('roles')">
+                                {{ __('Roles') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="url('permissions')">
+                                {{ __('Permissions') }}
+                            </x-dropdown-link>
+                        @endif
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>

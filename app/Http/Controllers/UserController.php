@@ -45,16 +45,21 @@ class UserController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        $id_user = Auth::user()->id;
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|same:confirm-password',
-            'status_user' => 'required|in:Magang,Paruh Waktu,Pegawai Tetap'
+            'status_user' => 'required|in:Magang,Paruh Waktu,Pegawai Tetap,Admin,Developer'
         ]);
         if ($request->status_user == 'Pegawai Tetap') {
             $user_code = "TCH";
         } elseif ($request->status_user == 'Paruh Waktu') {
             $user_code = "FRL";
+        } elseif ($request->status_user == 'Admin') {
+            $user_code = "ADM";
+        } elseif ($request->status_user == 'Developer') {
+            $user_code = "DEV";
         } else{
             $user_code = "MGG";
         }
@@ -72,9 +77,9 @@ class UserController extends Controller
             'nip' => '',
             'is_active' => 1,
             'created_at' => Carbon::now(),
-            'created_by' => null,
+            'created_by' => $id_user,
             'updated_at' => Carbon::now(),
-            'updated_by' => null,
+            'updated_by' => $id_user,
             'deleted_at' => null,
             'deleted_by' => null,
         ]);
@@ -103,6 +108,7 @@ class UserController extends Controller
 
     public function update(Request $request, $id): RedirectResponse
     {
+        $id_user = Auth::user()->id;
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $id,
@@ -118,7 +124,11 @@ class UserController extends Controller
             $user_code = "TCH";
         } elseif ($request->status_user == 'Paruh Waktu') {
             $user_code = "FRL";
-        } else {
+        } elseif ($request->status_user == 'Admin') {
+            $user_code = "ADM";
+        } elseif ($request->status_user == 'Developer') {
+            $user_code = "DEV";
+        } else{
             $user_code = "MGG";
         }
 
@@ -147,6 +157,7 @@ class UserController extends Controller
             'status_user' => $request->status_user,
             'user_code' => $user_code . rand(0, 999), // Atur ulang hanya jika status_user berubah
             'updated_at' => Carbon::now(),
+            'updated_by' => $id_user,
         ]);
 
         // Update role user

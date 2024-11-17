@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Subject extends Model
 {
@@ -32,6 +33,13 @@ class Subject extends Model
     }
 
     protected $dates = ['deleted_at'];
+    protected static function booted()
+    {
+        static::deleting(function ($subject) {
+            $subject->deleted_by = Auth::user()->id;
+            $subject->save();
+        });
+    }
 
     public function students(): BelongsToMany
     {
