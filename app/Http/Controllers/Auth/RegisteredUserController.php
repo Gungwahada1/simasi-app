@@ -23,7 +23,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        $roles = Role::all();
+        $roles = Role::whereIn('name', ['Magang', 'Paruh Waktu', 'Pegawai Tetap'])->get();
         return view('auth.register', compact('roles'));
     }
 

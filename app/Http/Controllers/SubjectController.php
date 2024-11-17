@@ -39,13 +39,12 @@ class SubjectController extends Controller
         $id_user = Auth::user()->id;
         $request->validate([
             'subject_name' => 'required',
-            'subject_description' => 'required',
         ]);
 
         Subject::create([
             'id' => Str::uuid()->toString(),
             'subject_name' => $request->subject_name,
-            'subject_description' => $request->subject_description,
+            'subject_description' => $request->subject_description ?? null,
             'created_at' => Carbon::now(),
             'created_by' => $id_user,
             'updated_at' => Carbon::now(),
@@ -71,10 +70,10 @@ class SubjectController extends Controller
         $id_user = Auth::user()->id;
         $request->validate([
             'subject_name' => 'required',
-            'subject_description' => 'required',
         ]);
 
         $input = $request->only(['subject_name', 'subject_description']);
+        $input['subject_description'] = $request->subject_description ?? null;
         $changes = array_diff_assoc($input, $subject->only(['subject_name', 'subject_description']));
 
         if (empty($changes)) {
