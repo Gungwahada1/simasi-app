@@ -12,6 +12,7 @@ class Absent extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'id',
         'user_id',
         'detail_subject_id',
         'status',
@@ -31,6 +32,9 @@ class Absent extends Model
         'deleted_by',
     ];
 
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+    protected $keyType = 'string';
     protected $dates = ['deleted_at'];
 
     public function user(): BelongsTo
