@@ -62,19 +62,17 @@
                     <table class="table table-bordered" style="width: 100%;">
                         <tr class="bg-gray-100">
                             <th width="5%">No</th>
-                            <th width="15%">Nama</th>
-                            <th width="15%">Detail Subject</th>
+                            <th width="15%">Student Name</th>
                             <th width="15%">Status</th>
-                            <th width="15%">Tanggal Ngajar</th>
+                            <th width="15%">Start Datetime</th>
                             <th width="10%">Action</th>
                         </tr>
                         @foreach ($data as $key => $absent)
                             <tr>
                                 <td class="text-center">{{ ++$i }}</td>
-                                <td class="text-center">{{ $absent->name }}</td>
-                                <td class="text-center">{{ $absent->detail_subject }}</td>
+                                <td class="text-center">{{ $absent->detail_subject_id }}</td>
                                 <td class="text-center">{{ $absent->status }}</td>
-                                <td class="text-center">{{ $absent->start_date_time }}</td>
+                                <td class="text-center">{{ $absent->subject_start_datetime }}</td>
                                 <td class="text-center">
                                     <a class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow"
                                        href="{{ route('absents.show',$absent->id) }}">

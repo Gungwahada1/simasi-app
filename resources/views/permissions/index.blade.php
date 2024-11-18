@@ -48,22 +48,27 @@
                                 Search
                             </button>
                         </form>
+                        @if (auth()->user()->hasRole('Admin') || auth()->user()->hasRole('Developer'))    
                         <a href="{{ route('permissions.create') }}" class="inline-flex items-center px-4 py-2 m-3 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow">
                             Add Permission
                         </a>
+                        @endif
                     </div>
                     <table class="table table-bordered" style="width: 100%;">
                         <tr class="bg-gray-100">
                             <th width="5%">No</th>
                             <th width="15%">Name</th>
                             <th width="15%">Created</th>
+                            @if (auth()->user()->hasRole('Admin') || auth()->user()->hasRole('Developer'))    
                             <th width="10%">Action</th>
+                            @endif
                         </tr>
                         @foreach ($permissions as $key => $permission)
                             <tr>
                                 <td class="text-center">{{ ++$i }}</td>
                                 <td class="text-center">{{ $permission->name }}</td>
                                 <td class="text-center">{{ \Carbon\Carbon::parse($permission->created_at)->format('d M, Y') }}</td>
+                                @if (auth()->user()->hasRole('Admin') || auth()->user()->hasRole('Developer'))    
                                 <td class="text-center">
                                     <a class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-black bg-yellow-400 hover:bg-yellow-500 rounded-lg shadow"
                                        href="{{ route('permissions.edit',$permission->uuid) }}">
@@ -79,6 +84,7 @@
                                         </button>
                                     </form>
                                 </td>
+                                @endif
                             </tr>
                         @endforeach
                     </table>

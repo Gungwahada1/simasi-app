@@ -13,13 +13,21 @@ class RolePermissionSeeder extends Seeder
     {
         // Daftar permissions dengan UUID
         $permissions = [
+            ['name' => 'absent-full', 'uuid' => Str::uuid()],
             ['name' => 'absent-index', 'uuid' => Str::uuid()],
             ['name' => 'absent-create', 'uuid' => Str::uuid()],
-            ['name' => 'absent-store', 'uuid' => Str::uuid()],
-            ['name' => 'absent-show', 'uuid' => Str::uuid()],
-            ['name' => 'absent-edit', 'uuid' => Str::uuid()],
-            ['name' => 'absent-update', 'uuid' => Str::uuid()],
-            ['name' => 'absent-delete', 'uuid' => Str::uuid()],
+            ['name' => 'student-full', 'uuid' => Str::uuid()],
+            ['name' => 'student-index', 'uuid' => Str::uuid()],
+            ['name' => 'student-show', 'uuid' => Str::uuid()],
+            ['name' => 'subject-full', 'uuid' => Str::uuid()],
+            ['name' => 'subject-index', 'uuid' => Str::uuid()],
+            ['name' => 'subject-show', 'uuid' => Str::uuid()],
+            ['name' => 'user-full', 'uuid' => Str::uuid()],
+            ['name' => 'role-full', 'uuid' => Str::uuid()],
+            ['name' => 'role-index', 'uuid' => Str::uuid()],
+            ['name' => 'role-show', 'uuid' => Str::uuid()],
+            ['name' => 'permission-full', 'uuid' => Str::uuid()],
+            ['name' => 'permission-index', 'uuid' => Str::uuid()],
         ];
 
         // Membuat permissions jika belum ada
@@ -37,7 +45,11 @@ class RolePermissionSeeder extends Seeder
         );
         $roleMagang->syncPermissions([
             'absent-index',
-            'absent-show',
+            'absent-create',
+            'student-index',
+            'student-show',
+            'subject-index',
+            'subject-show',
         ]);
 
         // Membuat role "Paruh Waktu" dengan UUID dan menetapkan permissions
@@ -48,10 +60,10 @@ class RolePermissionSeeder extends Seeder
         $roleParuhWaktu->syncPermissions([
             'absent-index',
             'absent-create',
-            'absent-store',
-            'absent-show',
-            'absent-edit',
-            'absent-update',
+            'student-index',
+            'student-show',
+            'subject-index',
+            'subject-show',
         ]);
 
         // Membuat role "Pegawai Tetap" dengan UUID dan menetapkan permissions
@@ -60,13 +72,41 @@ class RolePermissionSeeder extends Seeder
             ['uuid' => Str::uuid()]
         );
         $rolePegawaiTetap->syncPermissions([
-            'absent-index',
-            'absent-create',
-            'absent-store',
-            'absent-show',
-            'absent-edit',
-            'absent-update',
-            'absent-delete',
+            'absent-full',
+            'student-full',
+            'subject-full',
+            'user-full',
+            'role-index',
+            'role-show',
+            'permission-index',
+        ]);
+
+        // Membuat role "Admin" dengan UUID dan menetapkan permissions
+        $roleAdmin = Role::firstOrCreate(
+            ['name' => 'Admin'],
+            ['uuid' => Str::uuid()]
+        );
+        $roleAdmin->syncPermissions([
+            'absent-full',
+            'student-full',
+            'subject-full',
+            'user-full',
+            'role-full',
+            'permission-full',
+        ]);
+
+        // Membuat role "Developer" dengan UUID dan menetapkan permissions
+        $roleDeveloper = Role::firstOrCreate(
+            ['name' => 'Developer'],
+            ['uuid' => Str::uuid()]
+        );
+        $roleDeveloper->syncPermissions([
+            'absent-full',
+            'student-full',
+            'subject-full',
+            'user-full',
+            'role-full',
+            'permission-full',
         ]);
     }
 }

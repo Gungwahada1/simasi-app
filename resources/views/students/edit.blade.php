@@ -50,6 +50,22 @@
                             </select>
                         </div>
 
+                        <div class="col-xs-12 col-sm-12 col-md-12">
+                            <div class="form-group">
+                                <strong>Subjects:</strong>
+                                <br/>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                                    @foreach($subjects as $subject)
+                                        <label class="flex items-center">
+                                            <input type="checkbox" name="subjects[]" value="{{ $subject->id }}"
+                                            @if(in_array($subject->id, $selectedSubjects)) checked @endif>
+                                            {{ $subject->subject_name }}
+                                        </label>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="flex items-center justify-end mt-4">
                             <a href="{{ route('students.index') }}" 
                                class="mr-4 inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-300 hover:bg-gray-400 rounded-md shadow">

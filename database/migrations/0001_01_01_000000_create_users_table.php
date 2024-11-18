@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('username')->nullable();
-            $table->enum('status_user', ['Pegawai Tetap', 'Paruh Waktu', 'Magang']);
+            $table->enum('status_user', ['Pegawai Tetap', 'Paruh Waktu', 'Magang', 'Admin', 'Developer']);
             $table->string('nip')->nullable();
             $table->boolean('is_active');
             $table->timestamp('created_at')->nullable();

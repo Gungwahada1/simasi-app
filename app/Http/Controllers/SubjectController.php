@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Subject;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -35,19 +36,19 @@ class SubjectController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        $id_user = Auth::user()->id;
         $request->validate([
             'subject_name' => 'required',
-            'subject_description' => 'required',
         ]);
 
         Subject::create([
             'id' => Str::uuid()->toString(),
             'subject_name' => $request->subject_name,
-            'subject_description' => $request->subject_description,
+            'subject_description' => $request->subject_description ?? null,
             'created_at' => Carbon::now(),
-            'created_by' => null,
+            'created_by' => $id_user,
             'updated_at' => Carbon::now(),
-            'updated_by' => null,
+            'updated_by' => $id_user,
             'deleted_at' => null,
             'deleted_by' => null,
         ]);
@@ -66,19 +67,20 @@ class SubjectController extends Controller
 
     public function update(Request $request, Subject $subject): RedirectResponse
     {
+        $id_user = Auth::user()->id;
         $request->validate([
             'subject_name' => 'required',
-            'subject_description' => 'required',
         ]);
 
         $input = $request->only(['subject_name', 'subject_description']);
+        $input['subject_description'] = $request->subject_description ?? null;
         $changes = array_diff_assoc($input, $subject->only(['subject_name', 'subject_description']));
 
         if (empty($changes)) {
             return redirect()->route('subjects.edit', $subject->id)
                 ->with('info', 'No changes were made to the subject.');
         }
-        $subject->update(array_merge($input, ['updated_at' => Carbon::now()]));
+        $subject->update(array_merge($input, ['updated_at' => Carbon::now(), 'updated_by' => $id_user]));
         return redirect()->route('subjects.index')->with('warning', 'Subject updated successfully!');
     }
 

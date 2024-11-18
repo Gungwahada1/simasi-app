@@ -11,6 +11,7 @@
                 <p class="text-xl font-bold mb-4">Subject Description</p>
                 <p class="text-gray-700 mb-6">{{ $subject->subject_description }}</p>
                 <div class="flex space-x-4">
+                    @if (auth()->user()->hasRole('Pegawai Tetap') || auth()->user()->hasRole('Admin') || auth()->user()->hasRole('Developer'))    
                     <a class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg shadow"
                         href="{{ route('subjects.edit',$subject->id) }}">
                         <i class="fa-solid fa-pen-to-square"></i> Edit
@@ -20,6 +21,7 @@
                         @method('DELETE')
                         <button type="submit" class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg shadow">Delete</button>
                     </form>
+                    @endif
                     <a href="{{ route('subjects.index') }}" class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-gray-700 bg-gray-300 hover:bg-gray-400 rounded-lg shadow">
                         {{ __('Back') }}
                     </a>

@@ -19,9 +19,6 @@
                     <label for="subject_description" class="block text-sm font-medium text-gray-700">Description</label>
                     <textarea name="subject_description" placeholder="Insert Subject Description"  id="subject_description" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm 
                     focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">{{ old('subject_description') }}</textarea>
-                    @error('subject_description')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
             
                     <div class="flex items-center justify-end mt-4">
                         <a href="{{ route('subjects.index') }}" 

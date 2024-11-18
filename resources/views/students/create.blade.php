@@ -44,6 +44,25 @@
                                 @enderror
                             </div>
 
+                            <!-- Subject -->
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <div class="form-group">
+                                    <strong>Subjects:</strong>
+                                    <br/>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                                        @foreach($subject as $value)
+                                            <label class="flex items-center" for="subject-{{$value->id}}">
+                                                <input type="checkbox" name="subject[{{$value->id}}]" id="subject-{{$value->id}}" value="{{$value->id}}" class="mr-2">
+                                                {{ $value->subject_name }}
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                    {{-- @error('subject')
+                                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                                    @enderror --}}
+                                </div>
+                            </div>
+
                             <!-- Submit Button -->
                             <div class="flex items-center justify-end mt-4">
                                 <a href="{{ route('students.index') }}" 

@@ -23,7 +23,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        $roles = Role::all();
+        $roles = Role::whereIn('name', ['Magang', 'Paruh Waktu', 'Pegawai Tetap'])->get();
         return view('auth.register', compact('roles'));
     }
 
@@ -46,6 +46,10 @@ class RegisteredUserController extends Controller
             $user_code = "TCH";
         } elseif ($request->status_user == 'Paruh Waktu') {
             $user_code = "FRL";
+        } elseif ($request->status_user == 'Admin') {
+            $user_code = "ADM";
+        } elseif ($request->status_user == 'Developer') {
+            $user_code = "DEV";
         } else{
             $user_code = "MGG";
         }
