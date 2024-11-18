@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Add Absent') }}
+            {{ __('End Absent') }}
         </h2>
     </x-slot>
 
@@ -17,9 +17,9 @@
                             <div>
                                 <label for="student_id" class="block font-medium text-sm text-gray-700">Student</label>
                                 <select name="student_id" id="student_id"
-                                        class="form-select rounded-md shadow-sm mt-1 block w-full">
+                                        class="form-select rounded-md shadow-sm mt-1 block w-full text-gray-500">
                                     <option value="" disabled selected>Select Student</option>
-                                    <option value="{{ $absent->detail_subject_id }}" disabled selected>{{ $absent->detail_subject_id }}</option>
+                                    <option value="{{ $absent->student_id }}" disabled selected>{{ $absent->student_name }}</option>
                                 </select>
                                 @error('status')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -30,9 +30,9 @@
                             <div>
                                 <label for="subject_id" class="block font-medium text-sm text-gray-700">Subject</label>
                                 <select name="subject_id" id="subject_id"
-                                        class="form-select rounded-md shadow-sm mt-1 block w-full">
+                                        class="form-select rounded-md shadow-sm mt-1 block w-full text-gray-500">
                                     <option value="" disabled selected>Select Subject</option>
-                                    <option value="{{ $absent->detail_subject_id }}" disabled selected>{{ $absent->detail_subject_id }}</option>
+                                    <option value="{{ $absent->subject_id }}" disabled selected>{{ $absent->subject_name }}</option>
                                 </select>
                                 @error('status')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -43,7 +43,7 @@
                             <div>
                                 <label for="status" class="block font-medium text-sm text-gray-700">Status</label>
                                 <select name="status" id="status"
-                                        class="form-select rounded-md shadow-sm mt-1 block w-full">
+                                        class="form-select rounded-md shadow-sm mt-1 block w-full text-gray-500">
                                     <option value="" disabled selected>Select Status</option>
                                     <option value="{{ $absent->status }}" disabled selected>{{ $absent->status }}</option>
                                 </select>
@@ -58,7 +58,7 @@
                                                class="block font-medium text-sm text-gray-700">Start Date Time</label>
                                         <input type="datetime-local" name="subject_start_datetime"
                                                id="subject_start_datetime"
-                                               class="form-input rounded-md shadow-sm mt-1 block w-full"
+                                               class="form-input rounded-md shadow-sm mt-1 block w-full text-gray-500"
                                                value="{{ $absent->subject_start_datetime }}"
                                         disabled>
                                         @error('subject_start_datetime')
@@ -79,7 +79,7 @@
                                 </div>
                                 <div>
                                     <div class="text-center">
-                                        Total Ngajar
+                                        Teaching Time
                                     </div>
                                     <div class="w-[240px] border-black border rounded-md shadow-sm">
                                         <p id="total-duration" class="text-center px-2 py-2">
@@ -88,7 +88,7 @@
                                     </div>
                                     <div class="flex justify-around">
                                         <button type="button" onclick="btnDuration()"
-                                                class="mt-2 w-[45%] py-2 bg-blue-500 text-white rounded-md">Hitung
+                                                class="mt-2 w-[45%] py-2 bg-blue-500 text-white rounded-md">Count
                                         </button>
                                         <button type="button" onclick="btnReset()"
                                                 class="mt-2 w-[45%] py-2 bg-red-500 text-white rounded-md">Reset
@@ -102,10 +102,10 @@
                                     <div>
                                         <label for="proof_photo_start" class="block font-medium text-sm text-gray-700">Photo
                                             Start</label>
-                                        <input type="file" name="proof_photo_start" id="proof_photo_start"
-                                               class="form-input rounded-md shadow-sm mt-1 block w-full"
-                                               accept=".png, .jpg, .jpeg"
-                                               onchange="validateFile(this, 'img_start')"
+                                        <input type="name" name="proof_photo_start" id="proof_photo_start"
+                                               class="form-input rounded-md shadow-sm mt-1 block w-full text-gray-500"
+                                               style="padding: 10.75px 12px;"
+                                               value="{{ basename($absent->proof_photo_start) }}"
                                         disabled>
                                         @error('proof_photo_start')
                                         <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -113,8 +113,12 @@
                                     </div>
                                     <div class="flex justify-center mt-4">
                                         <div class="w-[280px] h-[280px] border-black border rounded-md ">
-                                            <img id="img_start" src="{{ storage_path( $absent->proof_photo_start ) }}" alt="Belum Ada Gambar"
-                                                 class="w-full h-full object-cover">
+                                            @if($absent->proof_photo_start)
+                                                <img id="img_start" src="{{ asset('storage/' . $absent->proof_photo_start) }}" alt="Foto Start"
+                                                    class="w-full h-full object-cover">
+                                            @else
+                                                <p>Belum Ada Gambar</p>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -131,7 +135,7 @@
                                     </div>
                                     <div class="flex justify-center mt-4">
                                         <div class="w-[280px] h-[280px] border-black border rounded-md">
-                                            <img id="img_end" src="{{ storage_path( $absent->proof_photo_end ) }}" alt="Belum Ada Gambar"
+                                            <img id="img_end" src="{{ storage_path( $absent->proof_photo_end ) }}" alt="No Picture Yet (If the Student's Status is Permission or Sick, Send a Photo containing Evidence such as a permission letter or sick note)"
                                                  class="w-full h-full object-cover">
                                         </div>
                                     </div>
@@ -143,7 +147,7 @@
                                         <label for="location_start" class="block font-medium text-sm text-gray-700">Location
                                             Start</label>
                                         <input type="text" name="location_start" id="location_start"
-                                               class="form-input rounded-md shadow-sm mt-1 block w-full"
+                                               class="form-input rounded-md shadow-sm mt-1 block w-full text-gray-500"
                                                value="{{ $absent->location_start }}" disabled>
                                         @error('location_start')
                                         <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -161,9 +165,9 @@
                                     </div>
                                 </div>
                                 {{--                                <div id="map" class="border border-black w-full h-[500px] mt-[20px]"></div>--}}
-                                <div class="flex mt-2">
-                                    <a href="#" onclick="getLocation('start')" id="setStartLocation"
-                                       class="w-full bg-blue-800 text-center py-2 text-white rounded-md disabled">Set Start
+                                <div class="flex mt-2 gap-[10px]">
+                                    <a href="#" id="setStartLocation"
+                                       class="w-full text-gray-700 bg-gray-300 text-center py-2 rounded-md disabled cursor-not-allowed">Set Start
                                         Location</a>
                                     <a href="#" onclick="getLocation('end')" id="setEndLocation"
                                        class="w-full bg-blue-800 text-center py-2 text-white rounded-md">Set End
@@ -176,7 +180,7 @@
                             <div>
                                 <label for="daily_report" class="block font-medium text-sm text-gray-700">Daily
                                     Report</label>
-                                <textarea placeholder="Please Insert Dialy Report Student With List Number"
+                                <textarea placeholder="Please Insert Daily Report Student With List Number"
                                           name="daily_report" id="daily_report"
                                           class="form-input resize-none  rounded-md shadow-sm mt-1 block w-full h-[120px]">{{ $absent->daily_report }}</textarea>
                                 @error('daily_report')
@@ -186,7 +190,7 @@
                             <div>
                                 <label for="daily_note" class="block font-medium text-sm text-gray-700">Daily
                                     Note</label>
-                                <textarea placeholder="Please Insert Dialy Note Student With List Number"
+                                <textarea placeholder="Please Insert Daily Note Student With List Number"
                                           name="daily_note" id="daily_note"
                                           class="form-input resize-none  rounded-md shadow-sm mt-1 block w-full h-[120px]">{{ $absent->daily_note }}</textarea>
                                 @error('daily_note')

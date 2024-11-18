@@ -36,10 +36,7 @@
                                 <select name="subject_id" id="subject_id"
                                         class="form-select rounded-md shadow-sm mt-1 block w-full">
                                     <option value="" disabled selected>Select Subject</option>
-                                    @foreach($subjects as $subject)
-                                        <option
-                                            value="{{ $subject->id }}" {{ old($subject->subject_name) == $subject->subject_name ? 'selected' : '' }}>{{ $subject->subject_name }}</option>
-                                    @endforeach
+                                    {{-- diisi sama JavaScript --}}
                                 </select>
                                 @error('status')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -92,7 +89,7 @@
                                 </div>
                                 <div>
                                     <div class="text-center">
-                                        Total Time
+                                        Teaching Time
                                     </div>
                                     <div class="w-[240px] border-black border rounded-md shadow-sm">
                                         <p id="total-duration" class="text-center px-2 py-2">
@@ -101,7 +98,7 @@
                                     </div>
                                     <div class="flex justify-around">
                                         <button type="button" onclick="btnDuration()"
-                                                class="mt-2 w-[45%] py-2 bg-blue-500 text-white rounded-md">Hitung
+                                                class="mt-2 w-[45%] py-2 bg-blue-500 text-white rounded-md">Count
                                         </button>
                                         <button type="button" onclick="btnReset()"
                                                 class="mt-2 w-[45%] py-2 bg-red-500 text-white rounded-md">Reset
@@ -125,7 +122,7 @@
                                     </div>
                                     <div class="flex justify-center mt-4">
                                         <div class="w-[280px] h-[280px] border-black border rounded-md ">
-                                            <img id="img_start" src="" alt="Belum Ada Gambar"
+                                            <img id="img_start" src="" alt="No Picture Yet (If the Student's Status is Permission or Sick, Send a Photo containing Evidence such as a permission letter or sick note)"
                                                  class="w-full h-full object-cover">
                                         </div>
                                     </div>
@@ -143,7 +140,7 @@
                                     </div>
                                     <div class="flex justify-center mt-4">
                                         <div class="w-[280px] h-[280px] border-black border rounded-md">
-                                            <img id="img_end" src="" alt="Belum Ada Gambar"
+                                            <img id="img_end" src="" alt="No Picture Yet (If the Student's Status is Permission or Sick, Send a Photo containing Evidence such as a permission letter or sick note)"
                                                  class="w-full h-full object-cover">
                                         </div>
                                     </div>
@@ -188,7 +185,7 @@
                             <div>
                                 <label for="daily_report" class="block font-medium text-sm text-gray-700">Daily
                                     Report</label>
-                                <textarea placeholder="Please Insert Dialy Report Student With List Number"
+                                <textarea placeholder="Please Insert Daily Report Student With List Number"
                                           name="daily_report" id="daily_report"
                                           class="form-input resize-none  rounded-md shadow-sm mt-1 block w-full h-[120px]">{{ old('daily_report') }}</textarea>
                                 @error('daily_report')
@@ -198,7 +195,7 @@
                             <div>
                                 <label for="daily_note" class="block font-medium text-sm text-gray-700">Daily
                                     Note</label>
-                                <textarea placeholder="Please Insert Dialy Note Student With List Number"
+                                <textarea placeholder="Please Insert Daily Note Student With List Number"
                                           name="daily_note" id="daily_note"
                                           class="form-input resize-none  rounded-md shadow-sm mt-1 block w-full h-[120px]">{{ old('daily_note') }}</textarea>
                                 @error('daily_note')
@@ -373,21 +370,22 @@
             }
         }
 
-        //set time now
-        document.addEventListener('DOMContentLoaded', function() {
-        // Mendapatkan waktu saat ini dalam format UTC
-        const now = new Date();
+        //subject berdasarkan student function
+        document.getElementById('student_id').addEventListener('change', function () {
+            const studentId = this.value;
+            const subjects = @json($filteredSubjects); // Data subjects yang difilter
 
-        // Menambahkan perbedaan waktu Bali (WITA - GMT+8) dalam milidetik
-        const witaOffset = 8 * 60 * 60 * 1000; // 8 jam dalam milidetik
-        const witaTime = new Date(now.getTime() + witaOffset);
+            const subjectDropdown = document.getElementById('subject_id');
+            subjectDropdown.innerHTML = '<option value="" disabled selected>Select Subject</option>'; // Reset options
 
-        // Format ke 'YYYY-MM-DDTHH:MM'
-        const formattedDateTime = witaTime.toISOString().slice(0, 16);
-
-        // Mengisi input dengan waktu saat ini dalam zona waktu Bali
-        const input = document.getElementById('subject_start_datetime');
-        input.value = formattedDateTime;
-    });
+            if (subjects[studentId]) {
+                subjects[studentId].forEach(subject => {
+                    const option = document.createElement('option');
+                    option.value = subject.id;
+                    option.textContent = subject.subject_name;
+                    subjectDropdown.appendChild(option);
+                });
+            }
+        });
     </script>
 </x-app-layout>

@@ -70,7 +70,7 @@
                         @foreach ($data as $key => $absent)
                             <tr>
                                 <td class="text-center">{{ ++$i }}</td>
-                                <td class="text-center">{{ $absent->detail_subject_id }}</td>
+                                <td class="text-center">{{ $absent->student_name }}</td>
                                 <td class="text-center">{{ $absent->status }}</td>
                                 <td class="text-center">{{ $absent->subject_start_datetime }}</td>
                                 <td class="text-center">
@@ -78,6 +78,7 @@
                                        href="{{ route('absents.show',$absent->id) }}">
                                         <i class="fa-solid fa-list"></i> Show
                                     </a>
+                                    @if (auth()->user()->hasRole('Admin') || auth()->user()->hasRole('Developer'))
                                     <a class="inline-flex items-center px-3 py-2 my-0.5 text-sm font-medium text-black bg-yellow-400 hover:bg-yellow-500 rounded-lg shadow"
                                        href="{{ route('absents.edit',$absent->id) }}">
                                         <i class="fa-solid fa-pen-to-square"></i> Edit
@@ -91,6 +92,7 @@
                                             <i class="fa-solid fa-trash"></i> Delete
                                         </button>
                                     </form>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

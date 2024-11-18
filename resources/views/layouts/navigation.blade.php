@@ -47,9 +47,11 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="url('absents')">
-                            {{ __('Absents') }}
-                        </x-dropdown-link>
+                        @if (auth()->user()->hasRole('Pegawai Tetap') || auth()->user()->hasRole('Admin') || auth()->user()->hasRole('Developer'))
+                            <x-dropdown-link :href="url('absents')">
+                                {{ __('Absents') }}
+                            </x-dropdown-link>
+                        @endif
                         <x-dropdown-link :href="url('students')">
                             {{ __('Students') }}
                         </x-dropdown-link>

@@ -31,8 +31,11 @@ class AbsentController extends Controller
     public function index(Request $request): View
     {
         $user_id = Auth::user()->id;
-        $query = Absent::where('user_id', $user_id)
-            ->orderBy('created_at', 'desc');
+        $query = Absent::select('absents.*', 'students.name as student_name')
+        ->join('detail_subjects', 'absents.detail_subject_id', '=', 'detail_subjects.id')
+        ->join('students', 'detail_subjects.student_id', '=', 'students.id')
+        ->where('absents.user_id', $user_id)
+        ->orderBy('absents.created_at', 'desc');
 
         if ($request->filled('search')) {
             $searchTerm = $request->search;
@@ -63,15 +66,20 @@ class AbsentController extends Controller
             ->first();
 
         if ($absent == null) {
-            $students = Student::get();
-            $subjects = Subject::get();
+            $students = Student::with('subjects')->get();
+            $filteredSubjects = [];
+
+            // Untuk setiap student, ambil subjects-nya
+            foreach ($students as $student) {
+                $filteredSubjects[$student->id] = $student->subjects; // Simpan subject yang terkait dengan student
+            }
 
             return view('absents.create', [
                 'students' => $students,
-                'subjects' => $subjects
+                'filteredSubjects' => $filteredSubjects
             ]);
         } else {
-            return view('absents.edit', compact('absent'));
+            return $this->edit($absent->id);
         }
     }
 
@@ -152,10 +160,20 @@ class AbsentController extends Controller
      * @param \App\Absent $absent
      * @return \Illuminate\Http\Response
      */
-    public function edit(Absent $absent): View
+    public function edit($id): View
     {
-        // return view('absents.edit',compact('absent'));
-        return view('dashboard');
+        // Jika absensi awal sudah ada, siapkan data untuk mengedit absensi
+        $absent = Absent::select('absents.*', 'students.name as student_name', 'students.id as student_id', 'subjects.id as subject_id', 'subjects.subject_name')
+        ->join('detail_subjects', 'absents.detail_subject_id', '=', 'detail_subjects.id')
+        ->join('students', 'detail_subjects.student_id', '=', 'students.id')
+        ->join('subjects', 'detail_subjects.subject_id', '=', 'subjects.id')
+        ->where('absents.id', $id)
+        ->firstOrFail();
+
+        $students = Student::all();
+        $subjects = Subject::all();
+
+        return view('absents.edit', compact('absent', 'students', 'subjects'));
     }
 
     /**
