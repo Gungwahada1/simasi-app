@@ -102,8 +102,6 @@ class AbsentController extends Controller
             "proof_photo_end" => "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",
             "location_start" => "required",
             "location_end" => "nullable",
-            "daily_report" => "required",
-            "daily_note" => "required",
         ]);
 
 
@@ -185,17 +183,20 @@ class AbsentController extends Controller
      */
     public function update(Request $request, Absent $absent)/*: RedirectResponse*/
     {
-        //  request()->validate([
-        //     'name' => 'required',
-        //     'detail' => 'required',
-        // ]);
+         request()->validate([
+            'subject_end_datetime' => 'require',
+            'proof_photo_end' => 'require',
+            'location_end' => 'require',
+            'daily_report' =>  request('daily_note') ?? '',
+            'daily_note' => request('daily_note') ?? '',
+        ]);
 
         // $absent->update($request->all());
 
-        // return redirect()->route('absents.index')
-        //                 ->with('success','Absent updated successfully');
+       
+        return redirect()->route('dashboard')->with('success', 'Data saved successfully');
 
-        return view('dashboard');
+        return view('absen.index');
     }
 
     /**

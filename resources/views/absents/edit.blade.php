@@ -11,6 +11,7 @@
                 <div class="p-6 text-gray-900">
                     <form action="{{ route('absents.update', $absent->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
+                        @method('PUT')
 
                         <div class="grid grid-cols-1 gap-6">
                             <!--Student ID -->

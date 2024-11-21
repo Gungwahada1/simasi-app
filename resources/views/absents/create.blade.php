@@ -188,9 +188,6 @@
                                 <textarea placeholder="Please Insert Daily Report Student With List Number"
                                           name="daily_report" id="daily_report"
                                           class="form-input resize-none  rounded-md shadow-sm mt-1 block w-full h-[120px]">{{ old('daily_report') }}</textarea>
-                                @error('daily_report')
-                                <span class="text-red-500 text-sm">{{ $message }}</span>
-                                @enderror
                             </div>
                             <div>
                                 <label for="daily_note" class="block font-medium text-sm text-gray-700">Daily
@@ -198,9 +195,6 @@
                                 <textarea placeholder="Please Insert Daily Note Student With List Number"
                                           name="daily_note" id="daily_note"
                                           class="form-input resize-none  rounded-md shadow-sm mt-1 block w-full h-[120px]">{{ old('daily_note') }}</textarea>
-                                @error('daily_note')
-                                <span class="text-red-500 text-sm">{{ $message }}</span>
-                                @enderror
                             </div>
 
                             <!-- Submit Button -->
