@@ -129,7 +129,8 @@
                                             End</label>
                                         <input type="file" name="proof_photo_end" id="proof_photo_end"
                                                class="form-input rounded-md shadow-sm mt-1 block w-full"
-                                               onchange="previewImage('proof_photo_end', 'img_end')">
+                                               accept=".png, .jpg, .jpeg"
+                                               onchange="validateFile(this, 'img_end')">
                                         @error('proof_photo_end')
                                         <span class="text-red-500 text-sm">{{ $message }}</span>
                                         @enderror
@@ -159,7 +160,7 @@
                                             End</label>
                                         <input type="text" name="location_end" id="location_end"
                                                class="form-input rounded-md shadow-sm mt-1 block w-full"
-                                               value="{{ $absent->location_end }}">
+                                               value="{{ old('location_end') }}">
                                         @error('location_end')
                                         <span class="text-red-500 text-sm">{{ $message }}</span>
                                         @enderror
@@ -167,10 +168,10 @@
                                 </div>
                                 {{--                                <div id="map" class="border border-black w-full h-[500px] mt-[20px]"></div>--}}
                                 <div class="flex mt-2 gap-[10px]">
-                                    <a href="#" id="setStartLocation"
+                                    <a href="javascript:void(0);" id="setStartLocation"
                                        class="w-full text-gray-700 bg-gray-300 text-center py-2 rounded-md disabled cursor-not-allowed">Set Start
                                         Location</a>
-                                    <a href="#" onclick="getLocation('end')" id="setEndLocation"
+                                    <a href="javascript:void(0);" onclick="getLocation('end')" id="setEndLocation"
                                        class="w-full bg-blue-800 text-center py-2 text-white rounded-md">Set End
                                         Location</a>
                                     {{--                                    <button id="setEndLocation" class="w-full bg-blue-800 text-center py-2 text-white rounded-md">Set End Location</button>--}}
@@ -183,25 +184,19 @@
                                     Report</label>
                                 <textarea placeholder="Please Insert Daily Report Student With List Number"
                                           name="daily_report" id="daily_report"
-                                          class="form-input resize-none  rounded-md shadow-sm mt-1 block w-full h-[120px]">{{ $absent->daily_report }}</textarea>
-                                @error('daily_report')
-                                <span class="text-red-500 text-sm">{{ $message }}</span>
-                                @enderror
+                                          class="form-input resize-none rounded-md shadow-sm mt-1 block w-full h-[120px]">{{ $absent->daily_report }}</textarea>
                             </div>
                             <div>
                                 <label for="daily_note" class="block font-medium text-sm text-gray-700">Daily
                                     Note</label>
                                 <textarea placeholder="Please Insert Daily Note Student With List Number"
                                           name="daily_note" id="daily_note"
-                                          class="form-input resize-none  rounded-md shadow-sm mt-1 block w-full h-[120px]">{{ $absent->daily_note }}</textarea>
-                                @error('daily_note')
-                                <span class="text-red-500 text-sm">{{ $message }}</span>
-                                @enderror
+                                          class="form-input resize-none rounded-md shadow-sm mt-1 block w-full h-[120px]">{{ $absent->daily_note }}</textarea>
                             </div>
 
                             <!-- Submit Button -->
                             <div class="flex items-center justify-end mt-4">
-                                <a href="{{ route('students.index') }}"
+                                <a href="{{ route('dashboard') }}"
                                    class="mr-4 inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-300 hover:bg-gray-400 rounded-md shadow">
                                     Cancel
                                 </a>

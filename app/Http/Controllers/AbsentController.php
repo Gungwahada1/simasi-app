@@ -79,7 +79,7 @@ class AbsentController extends Controller
                 'filteredSubjects' => $filteredSubjects
             ]);
         } else {
-            return $this->edit($absent->id);
+            return redirect()->route('absents.edit', ['absent' => $absent->id]);
         }
     }
 
@@ -89,7 +89,7 @@ class AbsentController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)/*: RedirectResponse */
+    public function store(Request $request)
     {
         $user_id = Auth::user()->id;
         request()->validate([
@@ -137,7 +137,7 @@ class AbsentController extends Controller
 
 //        dd($detail_subject_id->id);
 
-        return redirect()->route('dashboard')->with('success', 'Data saved successfully');
+        return redirect()->route('dashboard')->with('success', 'Start Absent created successfully');
     }
 
     /**
@@ -146,10 +146,16 @@ class AbsentController extends Controller
      * @param \App\Absent $absent
      * @return \Illuminate\Http\Response
      */
-    public function show(Absent $absent): View
+    public function show($id): View
     {
-        // return view('products.show',compact('absent'));
-        return view('dashboard');
+        $absent = Absent::select('absents.*', 'students.name as student_name', 'students.id as student_id', 'subjects.id as subject_id', 'subjects.subject_name')
+        ->join('detail_subjects', 'absents.detail_subject_id', '=', 'detail_subjects.id')
+        ->join('students', 'detail_subjects.student_id', '=', 'students.id')
+        ->join('subjects', 'detail_subjects.subject_id', '=', 'subjects.id')
+        ->where('absents.id', $id)
+        ->first();
+
+        return view('absents.show', compact('absent'));
     }
 
     /**
@@ -181,22 +187,41 @@ class AbsentController extends Controller
      * @param \App\Absent $absent
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Absent $absent)/*: RedirectResponse*/
+    public function update(Request $request, $id)
     {
-         request()->validate([
-            'subject_end_datetime' => 'require',
-            'proof_photo_end' => 'require',
-            'location_end' => 'require',
-            'daily_report' =>  request('daily_note') ?? '',
-            'daily_note' => request('daily_note') ?? '',
+        $user_id = Auth::user()->id;
+
+        // Validasi request
+        $request->validate([
+            "subject_end_datetime" => "required",
+            "proof_photo_end" => "required|image|mimes:jpeg,png,jpg,gif|max:2048",
+            "location_end" => "required",
+            "daily_report" => "nullable",
+            "daily_note" => "nullable",
         ]);
 
-        // $absent->update($request->all());
+        // Temukan absen berdasarkan ID
+        $absent = Absent::findOrFail($id);
 
-       
-        return redirect()->route('dashboard')->with('success', 'Data saved successfully');
+        // Proses proof photo end jika ada
+        $proofPhotoEndPath = $request->file('proof_photo_end')
+            ? $request->file('proof_photo_end')->store('proof_photos', 'public')
+            : $absent->proof_photo_end;
 
-        return view('absen.index');
+        // Update data
+        $absent->update([
+            'subject_end_datetime' => $request->subject_end_datetime ?? $absent->subject_end_datetime,
+            'proof_photo_end' => $proofPhotoEndPath,
+            'location_end' => $request->location_end 
+                ? 'https://www.google.com/maps/search/?api=1&query=' . $request->location_end 
+                : $absent->location_end,
+            'daily_report' => $request->daily_report ?? $absent->daily_report,
+            'daily_note' => $request->daily_note ?? $absent->daily_note,
+            'updated_at' => Carbon::now(),
+            'updated_by' => $user_id,
+        ]);
+
+        return redirect()->route('dashboard')->with('warning', 'Absent updated successfully and become End Absent');
     }
 
     /**
@@ -205,12 +230,10 @@ class AbsentController extends Controller
      * @param \App\Absent $absent
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Absent $absent)/*: RedirectResponse*/
+    public function destroy($id)
     {
-        // $absent->delete();
-
-        // return redirect()->route('products.index')
-        //                 ->with('success','Product deleted successfully');
-        return view('dashboard');
+        Absent::find($id)->delete();
+        return redirect()->route('absents.index')
+            ->with('danger', 'Absent deleted successfully');
     }
 }

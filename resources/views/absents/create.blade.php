@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Add Absent') }}
+            {{ __('Start Absent') }}
         </h2>
     </x-slot>
 
@@ -80,8 +80,9 @@
                                                class="block font-medium text-sm text-gray-700">End Date Time</label>
                                         <input type="datetime-local" name="subject_end_datetime"
                                                id="subject_end_datetime"
-                                               class="form-input rounded-md shadow-sm mt-1 block w-full"
-                                               value="{{ old('subject_end_datetime') }}">
+                                               class="form-input rounded-md shadow-sm mt-1 block w-full text-gray-500"
+                                               value="{{ old('subject_end_datetime') }}"
+                                               disabled>
                                         @error('subject_end_datetime')
                                         <span class="text-red-500 text-sm">{{ $message }}</span>
                                         @enderror
@@ -131,9 +132,12 @@
                                     <div>
                                         <label for="proof_photo_end" class="block font-medium text-sm text-gray-700">Photo
                                             End</label>
-                                        <input type="file" name="proof_photo_end" id="proof_photo_end"
-                                               class="form-input rounded-md shadow-sm mt-1 block w-full"
-                                               onchange="previewImage('proof_photo_end', 'img_end')">
+                                        <input type="name" name="proof_photo_end" id="proof_photo_end"
+                                               class="form-input rounded-md shadow-sm mt-1 block w-full text-gray-500"
+                                               style="padding: 10.75px 12px;"
+                                               value="You can't set 'Photo End' when filling the Start Absent"
+                                               onchange="previewImage('proof_photo_end', 'img_end')"
+                                               disabled>
                                         @error('proof_photo_end')
                                         <span class="text-red-500 text-sm">{{ $message }}</span>
                                         @enderror
@@ -162,20 +166,20 @@
                                         <label for="location_end" class="block font-medium text-sm text-gray-700">Location
                                             End</label>
                                         <input type="text" name="location_end" id="location_end"
-                                               class="form-input rounded-md shadow-sm mt-1 block w-full"
-                                               value="{{ old('location_end') }}">
+                                               class="form-input rounded-md shadow-sm mt-1 block w-full text-gray-500"
+                                               value="You can't set 'Location End' when filling the Start Absent" disabled>
                                         @error('location_end')
                                         <span class="text-red-500 text-sm">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
                                 {{--                                <div id="map" class="border border-black w-full h-[500px] mt-[20px]"></div>--}}
-                                <div class="flex mt-2">
-                                    <a href="#" onclick="getLocation('start')" id="setStartLocation"
+                                <div class="flex mt-2 gap-[10px]">
+                                    <a href="javascript:void(0);" onclick="getLocation('start')" id="setStartLocation"
                                        class="w-full bg-blue-800 text-center py-2 text-white rounded-md">Set Start
                                         Location</a>
-                                    <a href="#" onclick="getLocation('end')" id="setEndLocation"
-                                       class="w-full bg-blue-800 text-center py-2 text-white rounded-md">Set End
+                                    <a href="javascript:void(0);" id="setEndLocation"
+                                       class="w-full text-gray-700 bg-gray-300 text-center py-2 rounded-md disabled cursor-not-allowed">Set End
                                         Location</a>
                                     {{--                                    <button id="setEndLocation" class="w-full bg-blue-800 text-center py-2 text-white rounded-md">Set End Location</button>--}}
                                 </div>
@@ -187,19 +191,19 @@
                                     Report</label>
                                 <textarea placeholder="Please Insert Daily Report Student With List Number"
                                           name="daily_report" id="daily_report"
-                                          class="form-input resize-none  rounded-md shadow-sm mt-1 block w-full h-[120px]">{{ old('daily_report') }}</textarea>
+                                          class="form-input resize-none rounded-md shadow-sm mt-1 block w-full h-[120px]">{{ old('daily_report') }}</textarea>
                             </div>
                             <div>
                                 <label for="daily_note" class="block font-medium text-sm text-gray-700">Daily
                                     Note</label>
                                 <textarea placeholder="Please Insert Daily Note Student With List Number"
                                           name="daily_note" id="daily_note"
-                                          class="form-input resize-none  rounded-md shadow-sm mt-1 block w-full h-[120px]">{{ old('daily_note') }}</textarea>
+                                          class="form-input resize-none rounded-md shadow-sm mt-1 block w-full h-[120px]">{{ old('daily_note') }}</textarea>
                             </div>
 
                             <!-- Submit Button -->
                             <div class="flex items-center justify-end mt-4">
-                                <a href="{{ route('students.index') }}"
+                                <a href="{{ route('dashboard') }}"
                                    class="mr-4 inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-gray-300 hover:bg-gray-400 rounded-md shadow">
                                     Cancel
                                 </a>

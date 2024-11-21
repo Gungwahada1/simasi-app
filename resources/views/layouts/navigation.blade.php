@@ -15,7 +15,24 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="url('absents/create')" :active="request()->is('absents/create')">
+                    @php
+                        $user_id = Auth::user()->id;
+                        $absent = \App\Models\Absent::where('user_id', $user_id)
+                            ->where('created_at', '>=', now()->subDay())
+                            ->first();
+
+                            if ($absent && $absent->subject_end_datetime) {
+                                // Jika absensi sudah selesai, set pesan session
+                                session()->flash('info', "Today's absent has been filled");
+                                $absentUrl = url('dashboard'); // Arahkan ke dashboard
+                            } else {
+                                // Jika absensi belum selesai atau belum dimulai
+                                $absentUrl = $absent
+                                    ? url('absents/' . $absent->id . '/edit') // Edit absensi
+                                    : url('absents/create'); // Buat absensi baru
+                            }
+                    @endphp
+                    <x-nav-link :href="$absentUrl" :active="request()->is('absents/*')">
                         {{ __('Absents') }}
                     </x-nav-link>
                     <x-nav-link :href="url('students')" :active="request()->is('students*')">
