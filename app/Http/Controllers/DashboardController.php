@@ -30,7 +30,8 @@ class DashboardController extends Controller
         ->join('detail_subjects', 'absents.detail_subject_id', '=', 'detail_subjects.id')
         ->join('students', 'detail_subjects.student_id', '=', 'students.id')
         ->join('subjects', 'detail_subjects.subject_id', '=', 'subjects.id')
-        ->where('user_id', $user_id)
+        ->where('absents.user_id', $user_id)
+        ->where('absents.created_at', '>=', now()->subDay())
         ->whereNotNull('subject_start_datetime')
         ->first();
 
