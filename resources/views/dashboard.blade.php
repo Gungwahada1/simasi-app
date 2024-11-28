@@ -88,7 +88,7 @@
                         @php
                             $userRole = Auth::user()->roles->pluck('name')->first(); // Ambil nama peran pertama
                             $showOrIndexRoute = in_array($userRole, ['Magang', 'Paruh Waktu']) 
-                                        ? route('absents.show') 
+                                        ? route('absents.show', Auth::user()->id) 
                                         : route('absents.index');
                         @endphp
                         <a href="{{ $showOrIndexRoute }}" >
